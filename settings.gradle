@@ -1,2 +1,3 @@
 include ':app'
+include ':open_service_sip'
 rootProject.name = "SipApplication"
