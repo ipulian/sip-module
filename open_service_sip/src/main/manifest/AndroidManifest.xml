@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.ipusoft.siplibrary">
+
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <application>
+        <service android:name=".service.SipCallOutFloatingService">
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
+                <action android:name="com.ipusoft.siplibrary.service.SipCallOutFloatingService" />
+            </intent-filter>
+        </service>
+    </application>
+</manifest>
