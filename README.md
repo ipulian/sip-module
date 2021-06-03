@@ -1,6 +1,44 @@
 # SIP通讯SDK
+**使用SIP通讯SDK之前，需要先集成 IpuSDK(https://github.com/ipulian/ipusdk)** 
+有一些公共方法，在IpuSDK中已经做了说明，这里不再赘述。
+首先可以通过 https://github.com/ipulian/sip-module.git 把该项目在Android Studio中直接运行。
+## Setup
+```gradle
+allprojects {
+    repositories {
+        maven { url 'https://jitpack.io' }
+    }
+}
 
-## License
+dependencies {
+    implementation 'com.github.ipulian:sip-module:latest-version'//使用时把 latest-version 替换成最新release版本
+}
+```
+在AndroidManifest.xml中注册需要的权限
+```xml
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.USE_SIP" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+```
+## Usage
+- 1.通过SIP外呼(需要先申请android.permission.RECORD_AUDIO权限)
+```java
+  
+````
+- 2.SIP暂不支持发送短信
+```java
+
+```
+- 3.获取通话状态,可以参考 IpuSDK(https://github.com/ipulian/ipusdk) 中的说明。
+- 4.展示通话弹屏,可以参考 IpuSDK(https://github.com/ipulian/ipusdk) 中的说明。
+## ProGuard rules
+```
+-keep class com.ipusoft.siplibrary.bean.** { *;}
+```
+# License
 ```
 MIT License
 
@@ -24,3 +62,4 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
+
