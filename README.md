@@ -26,12 +26,27 @@ dependencies {
 ## Usage
 - 1.通过SIP外呼(需要先申请android.permission.RECORD_AUDIO权限)
 ```java
-  
+SipPhoneManager.callPhoneBySip(phone);
 ````
-- 2.SIP暂不支持发送短信
+- 2.注册SIP通话状态的listener
 ```java
-
+//继承 OnSipStatusChangedListener抽象类，并重写以下三个抽象方法 
+public class OnSipStatusChangedListenerImpl extends OnSipStatusChangedListener{
+    Override
+    public  void onSipResponseError(SipResponse sipResponse){
+        //TODO 外呼出错，通过sipResponse.getMsg()，可查看出错信息
+    }
+    Override  
+    public abstract void onStartCall(){
+        //TODO SIP准备完成(初始化，注册等)，开始外呼
+    }
+    Override
+    public abstract void onEndCall(){
+        //TODO 外呼结束，已经挂断
+    }
+}
 ```
+- 2.SIP暂不支持发送短信
 - 3.获取通话状态,可以参考 IpuSDK(https://github.com/ipulian/ipusdk) 中的说明。
 - 4.展示通话弹屏,可以参考 IpuSDK(https://github.com/ipulian/ipusdk) 中的说明。
 ## ProGuard rules
