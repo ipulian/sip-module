@@ -51,7 +51,7 @@ public class OnSipStatusChangedListenerImpl extends OnSipStatusChangedListener{
 - 4.展示通话弹屏,可以参考 IpuSDK(https://github.com/ipulian/ipusdk) 中的说明。
 ## ProGuard rules
 ```
--keep class com.ipusoft.siplibrary.bean.** { *;}
+-keep class com.ipusoft.sip.bean.** { *;}
 ```
 # License
 ```
