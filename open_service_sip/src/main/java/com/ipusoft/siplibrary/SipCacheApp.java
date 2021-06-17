@@ -15,6 +15,8 @@ public abstract class SipCacheApp extends IpuSoftSDK {
      */
     private static SipCallOutInfoBean sipCallOutInfoBean;
 
+//    private static UnknownCallBean unknownCallBean;
+
     /**
      * SIP外呼的号码
      */
@@ -29,6 +31,16 @@ public abstract class SipCacheApp extends IpuSoftSDK {
     public static SipCallOutInfoBean getSipCallOutInfoBean() {
         return SipCacheApp.sipCallOutInfoBean;
     }
+
+//    public static void setSipUnknownCallBean(UnknownCallBean bean) {
+//        String phone = bean.getCPhone();
+//        setSIPCallOutNumber(phone);
+//        SipCacheApp.unknownCallBean = bean;
+//    }
+//
+//    public static UnknownCallBean getSipUnknownCallBean() {
+//        return SipCacheApp.unknownCallBean;
+//    }
 
     public static String getSIPCallOutNumber() {
         return SIPCallOutNumber;

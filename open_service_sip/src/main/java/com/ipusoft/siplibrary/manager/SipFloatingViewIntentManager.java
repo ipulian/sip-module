@@ -1,11 +1,11 @@
 package com.ipusoft.siplibrary.manager;
 
-import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+import com.ipusoft.context.AppContext;
 import com.ipusoft.context.LiveDataBus;
-import com.ipusoft.context.LiveDataConstant;
+import com.ipusoft.context.constant.LiveDataConstant;
 import com.ipusoft.context.ServiceManager;
 import com.ipusoft.context.utils.GsonUtils;
 import com.ipusoft.siplibrary.SipCacheApp;
@@ -23,20 +23,18 @@ public class SipFloatingViewIntentManager {
 
     /**
      * 启动SIP呼叫的弹屏
-     *
-     * @param mContext
      */
-    public static void startSipCallOutFloatingService(Context mContext) {
+    public static void startSipCallOutFloatingService() {
         SipCallOutInfoBean sipCallOutInfoBean = SipCacheApp.getSipCallOutInfoBean();
         Log.d(TAG, "startSipCallOutFloatingService: ------>" + GsonUtils.toJson(sipCallOutInfoBean));
         if (ServiceManager.isServiceRunning(SipCallOutFloatingService.class)) {
             LiveDataBus.get().with(LiveDataConstant.WINDOW_SHOW_SIP_CALL, SipCallOutInfoBean.class)
                     .postValue(sipCallOutInfoBean);
         } else {
-            Intent intent = new Intent(mContext, SipCallOutFloatingService.class);
+            Intent intent = new Intent(AppContext.getAppContext(), SipCallOutFloatingService.class);
             intent.setAction("com.ipusoft.siplibrary.service.SipCallOutFloatingService");
             intent.putExtra(SipCallOutFloatingService.SIP_WINDOW_CUSTOMER_DATA, GsonUtils.toJson(sipCallOutInfoBean));
-            mContext.startService(intent);
+            AppContext.getAppContext().startService(intent);
         }
     }
 }

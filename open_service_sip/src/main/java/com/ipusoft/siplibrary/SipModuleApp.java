@@ -5,8 +5,10 @@ import android.content.Intent;
 import android.content.IntentFilter;
 
 import com.ipusoft.context.AppContext;
+import com.ipusoft.context.bean.SeatInfo;
 import com.ipusoft.context.iface.BaseSipStatusChangedListener;
 import com.ipusoft.siplibrary.ifaceimpl.OnHeadsetPlugListenerImpl;
+import com.ipusoft.siplibrary.manager.SipPhoneManager;
 import com.ipusoft.siplibrary.receiver.HeadsetPlugReceiver;
 
 import java.util.List;
@@ -18,6 +20,8 @@ import java.util.List;
  */
 
 public class SipModuleApp extends SipCacheApp {
+
+    private static final String TAG = "SipModuleApp";
 
     static {
         try {
@@ -32,14 +36,27 @@ public class SipModuleApp extends SipCacheApp {
         registerHeadsetPlugReceiver();
     }
 
+    @Override
+    public void unInitModule() {
+
+    }
 
     /**
      * 通过反射调用
      *
      * @param listeners
      */
-    public void initSipModule(List<BaseSipStatusChangedListener> listeners) {
+    public void registerSipListener(List<BaseSipStatusChangedListener> listeners) {
         MySipPhoneEvent.registerSipStatusChangedListener(listeners);
+    }
+
+    /**
+     * 通过反射调用
+     *
+     * @param seatInfo
+     */
+    public void registerSipService(SeatInfo seatInfo) {
+        SipPhoneManager.registerSip();
     }
 
 

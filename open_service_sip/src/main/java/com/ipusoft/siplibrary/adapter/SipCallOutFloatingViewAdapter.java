@@ -14,7 +14,7 @@ import com.ipusoft.context.utils.SizeUtils;
 import com.ipusoft.context.utils.StringUtils;
 import com.ipusoft.siplibrary.R;
 import com.ipusoft.siplibrary.bean.SipCallOutInfoBean;
-import com.ipusoft.siplibrary.bean.SipCallStatus;
+import com.ipusoft.context.constant.SipState;
 import com.ipusoft.siplibrary.view.SipCallOutFloatingView;
 
 import java.util.HashMap;
@@ -38,7 +38,7 @@ public class SipCallOutFloatingViewAdapter {
         updateView(mView);
     }
 
-    public void updateSipStatus(SipCallStatus sipCallStatus) {
+    public void updateSipStatus(SipState sipCallStatus) {
         if (tvStatus != null) {
             tvStatus.setText(sipCallStatus.getStr());
         }

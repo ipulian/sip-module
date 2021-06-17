@@ -3,14 +3,12 @@ package com.ipusoft.siplibrary.manager;
 
 import android.util.Log;
 
-import com.ipusoft.context.AppContext;
-import com.ipusoft.context.config.Env;
-import com.ipusoft.context.http.HttpConstant;
+import com.ipusoft.context.AppRuntimeContext;
 import com.ipusoft.context.utils.GsonUtils;
 import com.ipusoft.context.utils.StringUtils;
 import com.ipusoft.siplibrary.MyLogWriter;
 import com.ipusoft.siplibrary.MySipPhoneEvent;
-import com.ipusoft.siplibrary.bean.SeatInfo;
+import com.ipusoft.context.bean.SeatInfo;
 
 import org.pjsip.pjsua2.LogConfig;
 import org.pjsip.pjsua2.Phone;
@@ -46,6 +44,7 @@ public class SipManager {
      * 注册sip
      */
     public void registerSip(SeatInfo seatInfo) {
+        Log.d(TAG, "registerSip: ------->" + GsonUtils.toJson(seatInfo));
         if (seatInfo == null || StringUtils.isEmpty(seatInfo.getSeatNo())
                 || StringUtils.isEmpty(seatInfo.getSdkSecret()) ||
                 StringUtils.isEmpty(seatInfo.getApiKey())
@@ -70,14 +69,10 @@ public class SipManager {
             logConfig.setConsoleLevel(LOG_LEVEL);
             logConfig.setWriter(logWriter);
         }
-        Log.d(TAG, "registerSip: --->" + GsonUtils.toJson(seatInfo));
-        Log.d(TAG, "registerSip: --->" + (AppContext.getRuntimeEnv() == Env.DEV ?
-                HttpConstant.OPEN_URL_DEV : HttpConstant.OPEN_URL_PRO));
         if (phoneConfig == null) {
             phoneConfig = new PhoneConfig();
             phoneConfig.setLogConfig(logConfig);
-            phoneConfig.setLl_api_server(AppContext.getRuntimeEnv() == Env.DEV ?
-                    HttpConstant.OPEN_URL_DEV : HttpConstant.OPEN_URL_PRO);
+            phoneConfig.setLl_api_server(AppRuntimeContext.OPEN_BASE_URL);
             phoneConfig.setApi_key(seatInfo.getApiKey());
             phoneConfig.setSdk_secret(seatInfo.getSdkSecret());
             phoneConfig.setSeatId(seatInfo.getSeatNo());
@@ -96,7 +91,9 @@ public class SipManager {
      * @param cPhone 外呼号码
      */
     public void makeCall(String cPhone) {
+        Log.d(TAG, "makeCall: -------111--》" + cPhone);
         if (phone != null) {
+            Log.d(TAG, "makeCall: -------》" + cPhone);
             phone.callout(cPhone);
         }
     }

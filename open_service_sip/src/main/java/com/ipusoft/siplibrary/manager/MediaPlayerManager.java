@@ -50,7 +50,8 @@ public class MediaPlayerManager {
                 mediaPlayer.reset();
             }
             mediaPlayer = MediaPlayerManager.getMediaPlayer();
-            String pkgName = context.getApplicationContext().getPackageName();
+            String pkgName = context.getPackageName();
+            //  Log.d(TAG, "playSystemVoice: ------>" + pkgName);
             mediaPlayer.setDataSource(context, Uri.parse("android.resource://" + pkgName + "/" + resId));
             mediaPlayer.setLooping(isLooping);
             mediaPlayer.prepare();

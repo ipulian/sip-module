@@ -1,7 +1,10 @@
 package com.ipusoft.siplibrary.view;
 
 import android.content.Context;
+import android.graphics.PixelFormat;
+import android.os.Build;
 import android.util.AttributeSet;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -58,13 +61,36 @@ public class SipCallOutFloatingView extends LinearLayout implements FloatingView
         initView(context);
     }
 
-    private void initWindow(Context context) {
-        mWindowManager = IWindowManager.getWindowManager(context);
-        mLayoutParams = IWindowManager.getWindowParams();
+    private void initWindow() {
+        mWindowManager = IWindowManager.getWindowManager();
+        getWindowParams();
+    }
+
+    public void getWindowParams() {
+        if (mLayoutParams == null) {
+            synchronized (IWindowManager.class) {
+                if (mLayoutParams == null) {
+                    mLayoutParams = new WindowManager.LayoutParams();
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        mLayoutParams.type = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
+                    } else {
+                        mLayoutParams.type = WindowManager.LayoutParams.TYPE_SYSTEM_ALERT
+                                | WindowManager.LayoutParams.TYPE_SYSTEM_OVERLAY;
+                    }
+                    mLayoutParams.y = 0;
+                    mLayoutParams.format = PixelFormat.RGBA_8888;
+                    mLayoutParams.flags = WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS
+                            | WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL;
+                    mLayoutParams.gravity = Gravity.TOP;
+                    mLayoutParams.width = WindowManager.LayoutParams.MATCH_PARENT;
+                    mLayoutParams.height = WindowManager.LayoutParams.MATCH_PARENT;
+                }
+            }
+        }
     }
 
     private void initView(Context context) {
-        initWindow(context);
+        initWindow();
         showDialPan = false;
         flag = true;
 
@@ -143,6 +169,7 @@ public class SipCallOutFloatingView extends LinearLayout implements FloatingView
     public void onClick(View v) {
         if (v.getId() == R.id.iv_hung_up) {
             if (listener != null) {
+                VibrateUtils.vibrate(30);
                 dismiss();
                 listener.hungUp();
             }

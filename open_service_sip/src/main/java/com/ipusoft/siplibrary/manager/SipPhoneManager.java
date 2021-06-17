@@ -4,12 +4,13 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.ipusoft.context.AppContext;
+import com.ipusoft.context.bean.SeatInfo;
 import com.ipusoft.context.component.ToastUtils;
 import com.ipusoft.context.constant.HttpStatus;
+import com.ipusoft.context.utils.GsonUtils;
 import com.ipusoft.context.utils.StringUtils;
+import com.ipusoft.mmkv.datastore.AppDataStore;
 import com.ipusoft.siplibrary.SipCacheApp;
-import com.ipusoft.siplibrary.bean.SeatInfo;
-import com.ipusoft.siplibrary.datastore.SipDataStore;
 
 /**
  * author : GWFan
@@ -26,17 +27,24 @@ public class SipPhoneManager {
      * @param cPhone
      */
     public static void callPhoneBySip(String cPhone) {
-        SeatInfo seatInfo = SipDataStore.getSeatInfo();
-        if (seatInfo != null) {
+        Log.d(TAG, "callPhoneBySip: -cPhone-------》" + cPhone);
+        SeatInfo seatInfo = AppDataStore.getSeatInfo();
+        Log.d(TAG, "callPhoneBySip: --------123");
+        Log.d(TAG, "callPhoneBySip: -----------。" + GsonUtils.toJson(seatInfo));
+        if (seatInfo != null && StringUtils.isNotEmpty(seatInfo.getSeatNo())
+                && StringUtils.isNotEmpty(seatInfo.getSdkSecret())
+                && StringUtils.isNotEmpty(seatInfo.getApiKey())
+                && StringUtils.isNotEmpty(seatInfo.getPassword())) {
             String status = seatInfo.getStatus();
             if (StringUtils.equals(HttpStatus.SUCCESS, status)) {
-                Log.d(TAG, "callPhoneBySip:cPhone->" + cPhone);
+                //ToastUtils.dismiss();
+                Log.d(TAG, "callPhoneBySip: 3333" + cPhone);
                 if (StringUtils.isNotEmpty(cPhone)) {
-                    ToastUtils.showLoading();
-                    Log.d(TAG, "callPhoneBySip: ------" + Thread.currentThread().getName());
                     SipManager.getInstance().makeCall(cPhone);
                 }
             } else {
+                Log.d(TAG, "callPhoneBySip: 444");
+                //  Log.d(TAG, "callPhoneBySip: ----------》");
                 ToastUtils.showMessage(seatInfo.getMsg());
             }
         } else {
@@ -45,9 +53,13 @@ public class SipPhoneManager {
     }
 
     public static void reCallPhoneBySip() {
-        SeatInfo seatInfo = SipDataStore.getSeatInfo();
-        if (seatInfo != null) {
+        SeatInfo seatInfo = AppDataStore.getSeatInfo();
+        if (seatInfo != null && StringUtils.isNotEmpty(seatInfo.getSeatNo())
+                && StringUtils.isNotEmpty(seatInfo.getSdkSecret())
+                && StringUtils.isNotEmpty(seatInfo.getApiKey())
+                && StringUtils.isNotEmpty(seatInfo.getPassword())) {
             String status = seatInfo.getStatus();
+            ToastUtils.dismiss();
             if (StringUtils.equals(HttpStatus.SUCCESS, status)) {
                 String cPhone = SipCacheApp.getSIPCallOutNumber();
                 Log.d(TAG, "callPhoneBySip:cPhone->" + cPhone);
@@ -83,8 +95,12 @@ public class SipPhoneManager {
      * 注册SIP
      */
     public static void registerSip() {
-        SeatInfo seatInfo = SipDataStore.getSeatInfo();
-        if (seatInfo != null && StringUtils.equals(HttpStatus.SUCCESS, seatInfo.getStatus())) {
+        SeatInfo seatInfo = AppDataStore.getSeatInfo();
+        if (seatInfo != null && StringUtils.equals(HttpStatus.SUCCESS, seatInfo.getStatus())
+                && StringUtils.isNotEmpty(seatInfo.getSeatNo())
+                && StringUtils.isNotEmpty(seatInfo.getSdkSecret())
+                && StringUtils.isNotEmpty(seatInfo.getApiKey())
+                && StringUtils.isNotEmpty(seatInfo.getPassword())) {
             SipManager.getInstance().registerSip(seatInfo);
         } else {
             Toast.makeText(AppContext.getActivityContext(), "注册线路失败,无坐席信息", Toast.LENGTH_SHORT).show();

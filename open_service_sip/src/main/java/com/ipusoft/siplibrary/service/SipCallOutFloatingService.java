@@ -5,17 +5,16 @@ import android.content.Intent;
 import com.ipusoft.context.AppContext;
 import com.ipusoft.context.BaseLifeCycleService;
 import com.ipusoft.context.LiveDataBus;
-import com.ipusoft.context.LiveDataConstant;
+import com.ipusoft.context.constant.LiveDataConstant;
 import com.ipusoft.context.utils.GsonUtils;
 import com.ipusoft.context.utils.StringUtils;
 import com.ipusoft.siplibrary.ITimerTask;
 import com.ipusoft.siplibrary.adapter.SipCallOutFloatingViewAdapter;
 import com.ipusoft.siplibrary.bean.SipCallOutInfoBean;
-import com.ipusoft.siplibrary.bean.SipCallStatus;
+import com.ipusoft.context.constant.SipState;
 import com.ipusoft.siplibrary.constant.CallStatusCode;
 import com.ipusoft.siplibrary.iface.OnSipCallOutWindowClickListener;
 import com.ipusoft.siplibrary.manager.MediaPlayerManager;
-import com.ipusoft.siplibrary.manager.SipManager;
 import com.ipusoft.siplibrary.manager.SipPhoneManager;
 import com.ipusoft.siplibrary.view.SipCallOutFloatingView;
 
@@ -33,7 +32,6 @@ public class SipCallOutFloatingService extends BaseLifeCycleService implements
     private SipCallOutFloatingViewAdapter sipAdapter;
     public static final String SIP_WINDOW_CUSTOMER_DATA = "sip_window_customer_data";
     private int i = 0;
-
     private ITimerTask task;
 
     @Override
@@ -53,10 +51,9 @@ public class SipCallOutFloatingService extends BaseLifeCycleService implements
                     mFloatingView.show();
                 });
 
-        LiveDataBus.get().with(LiveDataConstant.UPDATE_SIP_CALL_STATUS, SipCallStatus.class)
+        LiveDataBus.get().with(LiveDataConstant.UPDATE_SIP_CALL_STATUS, SipState.class)
                 .observe(this, sipCallStatus -> {
                     if (CallStatusCode.CODE_1 == sipCallStatus.getStatus()) {
-                        SipManager.getInstance().resetLoginCnt();
                         MediaPlayerManager.playCallOutRing(AppContext.getAppContext());
                     } else if (CallStatusCode.CODE_3 == sipCallStatus.getStatus()
                             || CallStatusCode.CODE_4 == sipCallStatus.getStatus()) {
@@ -109,6 +106,9 @@ public class SipCallOutFloatingService extends BaseLifeCycleService implements
     @Override
     public void hungUp() {
         SipPhoneManager.dropPhone();
+        if (task != null) {
+            task.stop();
+        }
     }
 
     @Override
