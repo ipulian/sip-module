@@ -22,9 +22,11 @@ dependencies {
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.SYSTEM_OVERLAY_WINDOW" />
 ```
 ## Usage
-- 1.通过SIP外呼(需要先申请android.permission.RECORD_AUDIO权限)
+- 1.通过SIP外呼(需要先申请android.permission.RECORD_AUDIO权限和 android.permission.SYSTEM_OVERLAY_WINDOW权限)
 ```java
 SipPhoneManager.callPhoneBySip(phone);
 ````
