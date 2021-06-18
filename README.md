@@ -47,8 +47,8 @@ public class OnSipStatusChangedListenerImpl extends OnSipStatusChangedListener{
         //TODO 外呼结束，已经挂断
     }
 }
-并且把 OnSipStatusChangedListenerImpl 注册到SDK中
- IpuSoftSDK.registerSipStatusChangedListener(new OnSipStatusChangedListenerImpl());
+//并且把 OnSipStatusChangedListenerImpl 注册到SDK中
+IpuSoftSDK.registerSipStatusChangedListener(new OnSipStatusChangedListenerImpl());
 ```
 - 2.SIP暂不支持发送短信
 - 3.获取通话状态,可以参考 IpuSDK(https://github.com/ipulian/ipusdk) 中的说明。
