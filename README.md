@@ -22,9 +22,11 @@ dependencies {
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.SYSTEM_OVERLAY_WINDOW" />
 ```
 ## Usage
-- 1.通过SIP外呼(需要先申请android.permission.RECORD_AUDIO权限)
+- 1.通过SIP外呼(需要先申请android.permission.RECORD_AUDIO权限和 android.permission.SYSTEM_OVERLAY_WINDOW权限)
 ```java
 SipPhoneManager.callPhoneBySip(phone);
 ````
@@ -46,12 +48,17 @@ public class OnSipStatusChangedListenerImpl extends OnSipStatusChangedListener{
     }
 }
 ```
+并把该接口的实现类 OnSipStatusChangedListenerImpl 注册到 SDK中
+```java
+  //该方法在Application的onCreate中调用
+ IpuSoftSDK.registerSipStatusChangedListener(new OnSipStatusChangedListenerImpl());
+```
 - 2.SIP暂不支持发送短信
 - 3.获取通话状态,可以参考 IpuSDK(https://github.com/ipulian/ipusdk) 中的说明。
 - 4.展示通话弹屏,可以参考 IpuSDK(https://github.com/ipulian/ipusdk) 中的说明。
 ## ProGuard rules
 ```
--keep class com.ipusoft.siplibrary.bean.** { *;}
+-keep class com.ipusoft.sip.bean.** { *;}
 ```
 # License
 ```
