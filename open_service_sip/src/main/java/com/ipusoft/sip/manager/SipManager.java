@@ -44,7 +44,7 @@ public class SipManager {
      * 注册sip
      */
     public void registerSip(SeatInfo seatInfo) {
-        Log.d(TAG, "registerSip: ------->" + GsonUtils.toJson(seatInfo));
+        Log.d(TAG, "registerSip: 2--------------" + GsonUtils.toJson(seatInfo));
         if (seatInfo == null || StringUtils.isEmpty(seatInfo.getSeatNo())
                 || StringUtils.isEmpty(seatInfo.getSdkSecret()) ||
                 StringUtils.isEmpty(seatInfo.getApiKey())
@@ -69,6 +69,9 @@ public class SipManager {
             logConfig.setConsoleLevel(LOG_LEVEL);
             logConfig.setWriter(logWriter);
         }
+        Log.d(TAG, "registerSip: 3--------1------" + GsonUtils.toJson(seatInfo));
+        Log.d(TAG, "registerSip: 4---------1-----" + AppRuntimeContext.OPEN_BASE_URL);
+        Log.d(TAG, "registerSip: --------》" + (phoneConfig == null));
         if (phoneConfig == null) {
             phoneConfig = new PhoneConfig();
             phoneConfig.setLogConfig(logConfig);
@@ -90,12 +93,14 @@ public class SipManager {
      *
      * @param cPhone 外呼号码
      */
-    public void makeCall(String cPhone) {
-        Log.d(TAG, "makeCall: -------111--》" + cPhone);
+    public String makeCall(String cPhone) {
+        Log.d(TAG, "makeCall: ---------》" + cPhone);
+        String recordId = "";
         if (phone != null) {
-            Log.d(TAG, "makeCall: -------》" + cPhone);
-            phone.callout(cPhone);
+            recordId = phone.callout(cPhone);
         }
+        Log.d(TAG, "makeCall: --recordId-----》" + recordId);
+        return recordId;
     }
 
     /**
@@ -124,6 +129,7 @@ public class SipManager {
         logConfig = null;
         logWriter = null;
         phone = null;
+        mySipPhoneEvent = null;
     }
 
     /**

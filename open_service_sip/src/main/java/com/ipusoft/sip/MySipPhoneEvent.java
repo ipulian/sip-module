@@ -1,6 +1,5 @@
 package com.ipusoft.sip;
 
-import android.os.Handler;
 import android.util.Log;
 
 import com.ipusoft.context.bean.SipResponse;
@@ -10,6 +9,7 @@ import com.ipusoft.context.component.WToast;
 import com.ipusoft.context.iface.BaseSipStatusChangedListener;
 import com.ipusoft.context.utils.ArrayUtils;
 import com.ipusoft.context.utils.StringUtils;
+import com.ipusoft.context.utils.ThreadUtils;
 import com.ipusoft.sip.constant.CallStatusCode;
 import com.ipusoft.sip.constant.HttpCode;
 import com.ipusoft.sip.constant.InitCode;
@@ -35,10 +35,6 @@ public class MySipPhoneEvent extends PhoneEvent {
     public static void registerSipStatusChangedListener(List<BaseSipStatusChangedListener> listeners) {
         sipStatusChangedListenerList = listeners;
         Log.d(TAG, "registerSipStatusChangedListener: ------->" + sipStatusChangedListenerList.size());
-//        if (sipStatusChangedListenerList == null) {
-//            sipStatusChangedListenerList = new ArrayList<>();
-//        }
-//        sipStatusChangedListenerList.addAll(listeners);
     }
 
     @Override
@@ -48,7 +44,7 @@ public class MySipPhoneEvent extends PhoneEvent {
         Log.d(TAG, "msg: ---------》" + code);
         Log.d(TAG, "msg: ---------》" + msg);
         if (ArrayUtils.isNotEmpty(sipStatusChangedListenerList)) {
-            Log.d(TAG, "msg: ===========>----" + sipStatusChangedListenerList.size());
+            Log.d(TAG, "msg: ------------------sipStatusChangedListenerList.size()-》" + (sipStatusChangedListenerList.size()));
             SipResponse sipResponse = new SipResponse();
             sipResponse.setCode(code);
             sipResponse.setDate(date);
@@ -56,7 +52,7 @@ public class MySipPhoneEvent extends PhoneEvent {
             sipResponse.setMsg(msg);
             preHandleStatus(type, sipResponse);
         } else {
-            Log.d(TAG, "msg: ===========>222");
+            Log.d(TAG, "msg: ------------------sipStatusChangedListenerList.size()=0");
         }
     }
 
@@ -76,6 +72,7 @@ public class MySipPhoneEvent extends PhoneEvent {
             switch (code) {
                 case LoginCode.CODE_1:
                     Log.d(TAG, "login: 已签入");
+                    SipPhoneManager.reCallPhoneBySip();
                     break;
                 case LoginCode.CODE_0:
                     Log.d(TAG, "login: 签入失败，重新签入");
@@ -83,7 +80,7 @@ public class MySipPhoneEvent extends PhoneEvent {
                     break;
                 case LoginCode.CODE_M1:
                 case LoginCode.CODE_M99:
-                    ToastUtils.dismiss();
+                    ThreadUtils.runOnUiThread(ToastUtils::dismiss);
                     Log.d(TAG, "login: code=:" + code + "--->" + msg);
                     for (BaseSipStatusChangedListener listener : sipStatusChangedListenerList) {
                         listener.onSipResponseError(sipResponse);
@@ -103,7 +100,7 @@ public class MySipPhoneEvent extends PhoneEvent {
             }
         } else if (StringUtils.equals(SipType.HTTP.getType(), type)) {
             if (code == HttpCode.CODE_M99) {
-                ToastUtils.dismiss();
+                ThreadUtils.runOnUiThread(ToastUtils::dismiss);
                 Log.d(TAG, "http: code=-99:网络错误" + msg);
                 for (BaseSipStatusChangedListener listener : sipStatusChangedListenerList) {
                     listener.onSipResponseError(sipResponse);
@@ -113,29 +110,27 @@ public class MySipPhoneEvent extends PhoneEvent {
             switch (code) {
                 case CallStatusCode.CODE_M66:
                     Log.d(TAG, "onSipStatusChanged: ---->终端异常，需重新初始化，再呼叫");
-                    SipPhoneManager.registerSip();
-                    SipPhoneManager.reCallPhoneBySip();
+                    //SipPhoneManager.registerSip();
                     break;
                 case CallStatusCode.CODE_M88:
                     Log.d(TAG, "onSipStatusChanged: ---->分机状态错误，需尝试登陆(login即可)，再呼叫");
                     SipManager.getInstance().login();
-                    new Handler().postDelayed(SipPhoneManager::reCallPhoneBySip, 2000);
                     break;
                 case CallStatusCode.CODE_M99:
                     Log.d(TAG, "onSipStatusChanged: ---->Json解析错误（系统内部错误）");
-                    ToastUtils.showMessage(msg);
+                    ThreadUtils.runOnUiThread(() -> ToastUtils.showMessage(msg));
                     break;
                 case CallStatusCode.CODE_M1:
                     Log.d(TAG, "onSipStatusChanged: ---->其他错误，请联系管理员排查再使用");
                     Log.d(TAG, "onSipStatusChanged: --" + msg);
-                    ToastUtils.showMessage(msg);
+                    ThreadUtils.runOnUiThread(() -> ToastUtils.showMessage(msg));
                     break;
                 case CallStatusCode.CODE_7:
                     Log.d(TAG, "onSipStatusChanged: ------发送按键成功");
                     break;
                 case CallStatusCode.CODE_8:
                     Log.d(TAG, "onSipStatusChanged: ------发送按键失败");
-                    WToast.showMessage("发送按键失败");
+                    ThreadUtils.runOnUiThread(() -> WToast.showMessage("发送按键失败"));
                     break;
                 case CallStatusCode.CODE_0:
                 case CallStatusCode.CODE_1:
@@ -144,6 +139,7 @@ public class MySipPhoneEvent extends PhoneEvent {
                 case CallStatusCode.CODE_4:
                 case CallStatusCode.CODE_5:
                 case CallStatusCode.CODE_6:
+                    SipPhoneManager.setFlag(false);
                     AppCacheContext.setSipState(code);
                     for (BaseSipStatusChangedListener listener : sipStatusChangedListenerList) {
                         listener.onSipResponseSuccess(sipResponse);

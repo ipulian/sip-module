@@ -105,6 +105,7 @@ public class MediaPlayerManager {
                 mediaPlayer = null;
             }
         } catch (Exception e) {
+            e.printStackTrace();
             //LogUtils.d("stopPlay:" + e.toString());
         }
     }

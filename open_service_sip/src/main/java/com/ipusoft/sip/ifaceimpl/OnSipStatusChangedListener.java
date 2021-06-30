@@ -6,6 +6,7 @@ import com.ipusoft.context.bean.SipResponse;
 import com.ipusoft.context.component.ToastUtils;
 import com.ipusoft.context.iface.BaseSipStatusChangedListener;
 import com.ipusoft.context.constant.SipState;
+import com.ipusoft.context.utils.ThreadUtils;
 import com.ipusoft.sip.constant.CallStatusCode;
 import com.ipusoft.sip.manager.SipFloatingViewIntentManager;
 import com.ipusoft.sip.manager.SipManager;
@@ -31,7 +32,7 @@ public abstract class OnSipStatusChangedListener implements BaseSipStatusChanged
         SipState status = SipState.STATUS_0;
         switch (sipResponse.getCode()) {
             case CallStatusCode.CODE_1:
-                ToastUtils.dismiss();
+                ThreadUtils.runOnUiThread(ToastUtils::dismiss);
                 SipFloatingViewIntentManager.startSipCallOutFloatingService();
                 SipManager.getInstance().resetLoginCnt();
                 status = SipState.STATUS_1;

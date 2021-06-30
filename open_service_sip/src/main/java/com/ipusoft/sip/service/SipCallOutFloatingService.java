@@ -1,10 +1,12 @@
 package com.ipusoft.sip.service;
 
 import android.content.Intent;
+import android.util.Log;
 
 import com.ipusoft.context.AppContext;
 import com.ipusoft.context.BaseLifeCycleService;
 import com.ipusoft.context.LiveDataBus;
+import com.ipusoft.context.component.ToastUtils;
 import com.ipusoft.context.constant.LiveDataConstant;
 import com.ipusoft.context.utils.GsonUtils;
 import com.ipusoft.context.utils.StringUtils;
@@ -25,12 +27,10 @@ import java.util.TimerTask;
  * time   : 5/31/21 6:14 PM
  * desc   :
  */
-public class SipCallOutFloatingService extends BaseLifeCycleService implements
-        OnSipCallOutWindowClickListener {
+public class SipCallOutFloatingService extends BaseLifeCycleService implements OnSipCallOutWindowClickListener {
     private static final String TAG = "SipCallOutFloatingServi";
     private SipCallOutFloatingView mFloatingView;
     private SipCallOutFloatingViewAdapter sipAdapter;
-    public static final String SIP_WINDOW_CUSTOMER_DATA = "sip_window_customer_data";
     private int i = 0;
     private ITimerTask task;
 
@@ -47,17 +47,20 @@ public class SipCallOutFloatingService extends BaseLifeCycleService implements
 
         LiveDataBus.get().with(LiveDataConstant.WINDOW_SHOW_SIP_CALL, SipCallOutInfoBean.class)
                 .observe(this, sipBean -> {
+                    Log.d(TAG, "onIStartCommand: ----------->2");
                     sipAdapter.updateData(sipBean);
                     mFloatingView.show();
                 });
 
         LiveDataBus.get().with(LiveDataConstant.UPDATE_SIP_CALL_STATUS, SipState.class)
                 .observe(this, sipCallStatus -> {
+                    ToastUtils.dismiss();
                     if (CallStatusCode.CODE_1 == sipCallStatus.getStatus()) {
                         MediaPlayerManager.playCallOutRing(AppContext.getAppContext());
-                    } else if (CallStatusCode.CODE_3 == sipCallStatus.getStatus()
-                            || CallStatusCode.CODE_4 == sipCallStatus.getStatus()) {
+                    } else if (CallStatusCode.CODE_3 == sipCallStatus.getStatus()) {
                         MediaPlayerManager.stopAndReleasePlay();
+                    } else if (CallStatusCode.CODE_4 == sipCallStatus.getStatus()) {
+
                     } else if (CallStatusCode.CODE_5 == sipCallStatus.getStatus()) {
                         try {
                             i = 0;
@@ -72,24 +75,30 @@ public class SipCallOutFloatingService extends BaseLifeCycleService implements
                             e.printStackTrace();
                         }
                     } else if (CallStatusCode.CODE_6 == sipCallStatus.getStatus()) {
-                        if (task != null) {
-                            task.stop();
+                        try {
+                            if (task != null) {
+                                task.stop();
+                            }
+                            MediaPlayerManager.playHungUpRing(AppContext.getAppContext(),
+                                    mp -> mFloatingView.dismiss());
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
-                        MediaPlayerManager.playHungUpRing(AppContext.getAppContext(),
-                                mp -> mFloatingView.dismiss());
                     }
                     sipAdapter.updateSipStatus(sipCallStatus);
+                    Log.d(TAG, "onIStartCommand: ----------->3--->" + sipCallStatus);
                 });
     }
 
     @Override
     protected void onIStartCommand(Intent intent, int flags, int startId) {
-        String json = intent.getStringExtra(SIP_WINDOW_CUSTOMER_DATA);
+        String json = intent.getStringExtra(LiveDataConstant.WINDOW_SHOW_SIP_CALL);
         if (StringUtils.isNotEmpty(json)) {
             SipCallOutInfoBean sipCallOutInfoBean = GsonUtils.fromJson(json, SipCallOutInfoBean.class);
+            Log.d(TAG, "onIStartCommand: ----------->1");
             sipAdapter.updateData(sipCallOutInfoBean);
+            mFloatingView.show();
         }
-        mFloatingView.show();
     }
 
     @Override

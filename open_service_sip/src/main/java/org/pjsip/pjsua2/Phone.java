@@ -9,94 +9,94 @@
 package org.pjsip.pjsua2;
 
 public class Phone {
-  private transient long swigCPtr;
-  protected transient boolean swigCMemOwn;
+    private transient long swigCPtr;
+    protected transient boolean swigCMemOwn;
 
-  protected Phone(long cPtr, boolean cMemoryOwn) {
-    swigCMemOwn = cMemoryOwn;
-    swigCPtr = cPtr;
-  }
-
-  protected static long getCPtr(Phone obj) {
-    return (obj == null) ? 0 : obj.swigCPtr;
-  }
-
-  protected void finalize() {
-    delete();
-  }
-
-  public synchronized void delete() {
-    if (swigCPtr != 0) {
-      if (swigCMemOwn) {
-        swigCMemOwn = false;
-        pjsua2JNI.delete_Phone(swigCPtr);
-      }
-      swigCPtr = 0;
+    protected Phone(long cPtr, boolean cMemoryOwn) {
+        swigCMemOwn = cMemoryOwn;
+        swigCPtr = cPtr;
     }
-  }
 
-  public Phone() {
-    this(pjsua2JNI.new_Phone(), true);
-  }
+    protected static long getCPtr(Phone obj) {
+        return (obj == null) ? 0 : obj.swigCPtr;
+    }
 
-  public static Phone instance() {
-    return new Phone(pjsua2JNI.Phone_instance(), false);
-  }
+    protected void finalize() {
+        delete();
+    }
 
-  public void logFunc(int level, String data, int len) {
-    pjsua2JNI.Phone_logFunc(swigCPtr, this, level, data, len);
-  }
+    public synchronized void delete() {
+        if (swigCPtr != 0) {
+            if (swigCMemOwn) {
+                swigCMemOwn = false;
+                pjsua2JNI.delete_Phone(swigCPtr);
+            }
+            swigCPtr = 0;
+        }
+    }
 
-  public void utilLogWrite(LogEntry entry) {
-    pjsua2JNI.Phone_utilLogWrite(swigCPtr, this, LogEntry.getCPtr(entry), entry);
-  }
+    public Phone() {
+        this(pjsua2JNI.new_Phone(), true);
+    }
 
-  public void init(PhoneConfig pConfig) {
-    pjsua2JNI.Phone_init(swigCPtr, this, PhoneConfig.getCPtr(pConfig), pConfig);
-  }
+    public static Phone instance() {
+        return new Phone(pjsua2JNI.Phone_instance(), false);
+    }
 
-  public void login() {
-    pjsua2JNI.Phone_login(swigCPtr, this);
-  }
+    public void logFunc(int level, String data, int len) {
+        pjsua2JNI.Phone_logFunc(swigCPtr, this, level, data, len);
+    }
 
-  public void resetLoginCnt() {
-    pjsua2JNI.Phone_resetLoginCnt(swigCPtr, this);
-  }
+    public void utilLogWrite(LogEntry entry) {
+        pjsua2JNI.Phone_utilLogWrite(swigCPtr, this, LogEntry.getCPtr(entry), entry);
+    }
 
-  public void unInit() {
-    pjsua2JNI.Phone_unInit(swigCPtr, this);
-  }
+    public void init(PhoneConfig pConfig) {
+        pjsua2JNI.Phone_init(swigCPtr, this, PhoneConfig.getCPtr(pConfig), pConfig);
+    }
 
-  public void dialDTMF(String digits) {
-    pjsua2JNI.Phone_dialDTMF(swigCPtr, this, digits);
-  }
+    public void login() {
+        pjsua2JNI.Phone_login(swigCPtr, this);
+    }
 
-  public void callout(String dialCall) {
-    pjsua2JNI.Phone_callout(swigCPtr, this, dialCall);
-  }
+    public void resetLoginCnt() {
+        pjsua2JNI.Phone_resetLoginCnt(swigCPtr, this);
+    }
 
-  public void dropCall() {
-    pjsua2JNI.Phone_dropCall(swigCPtr, this);
-  }
+    public void unInit() {
+        pjsua2JNI.Phone_unInit(swigCPtr, this);
+    }
 
-  public void answerCall() {
-    pjsua2JNI.Phone_answerCall(swigCPtr, this);
-  }
+    public void dialDTMF(String digits) {
+        pjsua2JNI.Phone_dialDTMF(swigCPtr, this, digits);
+    }
 
-  public String https_post(String arg0, String arg1) {
-    return pjsua2JNI.Phone_https_post(swigCPtr, this, arg0, arg1);
-  }
+    public String callout(String dialCall) {
+        return pjsua2JNI.Phone_callout(swigCPtr, this, dialCall);
+    }
 
-  public String getTime() {
-    return pjsua2JNI.Phone_getTime(swigCPtr, this);
-  }
+    public void dropCall() {
+        pjsua2JNI.Phone_dropCall(swigCPtr, this);
+    }
 
-  public String getDate() {
-    return pjsua2JNI.Phone_getDate(swigCPtr, this);
-  }
+    public void answerCall() {
+        pjsua2JNI.Phone_answerCall(swigCPtr, this);
+    }
 
-  public String getVersion() {
-    return pjsua2JNI.Phone_getVersion(swigCPtr, this);
-  }
+    public String https_post(String arg0, String arg1) {
+        return pjsua2JNI.Phone_https_post(swigCPtr, this, arg0, arg1);
+    }
+
+    public String getTime() {
+        return pjsua2JNI.Phone_getTime(swigCPtr, this);
+    }
+
+    public String getDate() {
+        return pjsua2JNI.Phone_getDate(swigCPtr, this);
+    }
+
+    public String getVersion() {
+        return pjsua2JNI.Phone_getVersion(swigCPtr, this);
+    }
 
 }
