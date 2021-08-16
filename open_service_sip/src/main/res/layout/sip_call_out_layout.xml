@@ -140,6 +140,7 @@
             android:orientation="horizontal">
 
             <LinearLayout
+                android:id="@+id/ll_dial_pan_show"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -151,10 +152,11 @@
                     android:layout_height="62dp"
                     android:clickable="true"
                     android:focusable="true"
-                    android:src="@drawable/ic_window_dial_pan_show" />
+                    android:src="@drawable/sip_ic_window_dial_pan_show" />
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/ll_hung_up"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -166,10 +168,27 @@
                     android:layout_height="62dp"
                     android:clickable="true"
                     android:focusable="true"
-                    android:src="@drawable/ic_hung_up" />
+                    android:src="@drawable/sip_ic_hung_up" />
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/ll_receive"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center">
+
+                <ImageView
+                    android:id="@+id/iv_receive"
+                    android:layout_width="62dp"
+                    android:layout_height="62dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:src="@drawable/sip_ic_receive_phone" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_audio_mode"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -182,14 +201,14 @@
                     android:layout_height="62dp"
                     android:clickable="true"
                     android:focusable="true"
-                    android:src="@drawable/ic_receiver" />
+                    android:src="@drawable/sip_ic_receiver" />
 
                 <ImageView
                     android:id="@+id/iv_arrow"
                     android:layout_width="28dp"
                     android:layout_height="28dp"
                     android:layout_marginStart="@dimen/dp_5"
-                    android:src="@drawable/arrow_right" />
+                    android:src="@drawable/sip_arrow_right" />
             </LinearLayout>
         </LinearLayout>
     </RelativeLayout>

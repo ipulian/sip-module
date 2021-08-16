@@ -2,7 +2,7 @@ package com.ipusoft.sip.constant;
 
 import androidx.annotation.RawRes;
 
-import com.ipusoft.context.utils.StringUtils;
+import com.ipusoft.utils.StringUtils;
 import com.ipusoft.sip.R;
 
 import java.util.ArrayList;
@@ -58,8 +58,8 @@ public enum DialKey {
     /**
      * 根据按键类型返回提示音
      *
-     * @param key
-     * @return
+     * @param key 按键类型
+     * @return 提示音ResId
      */
     public static int getTipVoiceByKey(String key) {
         int resId = 0;

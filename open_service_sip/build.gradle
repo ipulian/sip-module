@@ -15,7 +15,7 @@ group = 'com.github.team.github@51lianlian.com'
 android {
 
     compileSdkVersion 30
-    buildToolsVersion "30.0.2"
+    buildToolsVersion "30.0.3"
 
     defaultConfig {
         if (isApp) {
@@ -68,7 +68,7 @@ dependencies {
     if (isApp) {
         implementation project(":context:context")
     } else {
-        implementation 'com.github.ipulian:ipusdk:1.6.22'
+        implementation 'com.github.ipulian:ipusdk:1.6.23'
         //implementation project(":context:context")
     }
 

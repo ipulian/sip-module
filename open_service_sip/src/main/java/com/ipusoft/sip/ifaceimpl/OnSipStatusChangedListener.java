@@ -1,12 +1,14 @@
 package com.ipusoft.sip.ifaceimpl;
 
+import android.util.Log;
+
 import com.ipusoft.context.LiveDataBus;
 import com.ipusoft.context.constant.LiveDataConstant;
 import com.ipusoft.context.bean.SipResponse;
 import com.ipusoft.context.component.ToastUtils;
 import com.ipusoft.context.iface.BaseSipStatusChangedListener;
 import com.ipusoft.context.constant.SipState;
-import com.ipusoft.context.utils.ThreadUtils;
+import com.ipusoft.utils.ThreadUtils;
 import com.ipusoft.sip.constant.CallStatusCode;
 import com.ipusoft.sip.manager.SipFloatingViewIntentManager;
 import com.ipusoft.sip.manager.SipManager;
@@ -33,10 +35,15 @@ public abstract class OnSipStatusChangedListener implements BaseSipStatusChanged
         switch (sipResponse.getCode()) {
             case CallStatusCode.CODE_1:
                 ThreadUtils.runOnUiThread(ToastUtils::dismiss);
+                Log.d(TAG, "onSipResponseSuccess: ----------<");
                 SipFloatingViewIntentManager.startSipCallOutFloatingService();
                 SipManager.getInstance().resetLoginCnt();
                 status = SipState.STATUS_1;
                 onStartCall();
+                break;
+            case CallStatusCode.CODE_2:
+                status = SipState.STATUS_2;
+                SipFloatingViewIntentManager.startSipCallOutFloatingService();
                 break;
             case CallStatusCode.CODE_3:
                 status = SipState.STATUS_3;

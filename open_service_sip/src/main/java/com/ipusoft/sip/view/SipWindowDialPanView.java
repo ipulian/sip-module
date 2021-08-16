@@ -11,12 +11,12 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 
 import com.ipusoft.context.AppContext;
-import com.ipusoft.context.utils.VibrateUtils;
 import com.ipusoft.sip.R;
 import com.ipusoft.sip.constant.DialKey;
 import com.ipusoft.sip.iface.OnSipWindowDialPanClickListener;
 import com.ipusoft.sip.manager.MediaPlayerManager;
 import com.ipusoft.sip.manager.SipManager;
+import com.ipusoft.utils.DeviceUtils;
 
 import java.util.List;
 import java.util.Map;
@@ -75,7 +75,7 @@ public class SipWindowDialPanView extends LinearLayout implements View.OnClickLi
 
     @Override
     public void onClick(View v) {
-        VibrateUtils.vibrate(30);
+        DeviceUtils.vibrate(30);
         String tag = (String) v.getTag();
         MediaPlayerManager.playPressTipVoice(AppContext.getAppContext(), DialKey.getTipVoiceByKey(tag));
         SipManager.getInstance().dialDTMF(tag);

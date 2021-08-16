@@ -97,7 +97,7 @@ public class MediaPlayerManager {
     /**
      * 停止播放
      */
-    public static void stopAndReleasePlay() {
+    public static synchronized void stopAndReleasePlay() {
         try {
             if (mediaPlayer != null) {
                 mediaPlayer.stop();
@@ -106,7 +106,6 @@ public class MediaPlayerManager {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            //LogUtils.d("stopPlay:" + e.toString());
         }
     }
 }

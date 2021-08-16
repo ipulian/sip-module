@@ -20,4 +20,9 @@ public interface OnSipCallOutWindowClickListener {
      */
     void dialDTMF(String number);
 
+    /**
+     * 接听
+     */
+    void answerCall();
+
 }

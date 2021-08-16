@@ -12,7 +12,7 @@
         android:layout_height="70dp"
         android:layout_gravity="center"
         android:layout_marginTop="@dimen/dp_5"
-        android:background="@drawable/dial_btn_bg3"
+        android:background="@drawable/sip_dial_btn_bg3"
         android:clickable="true"
         android:focusable="true"
         android:gravity="center"

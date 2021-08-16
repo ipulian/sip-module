@@ -1,5 +1,7 @@
 package com.ipusoft.sip.bean;
 
+import com.ipusoft.sip.constant.SipPhoneType;
+
 /**
  * author : GWFan
  * time   : 6/1/21 4:58 PM
@@ -7,6 +9,8 @@ package com.ipusoft.sip.bean;
  */
 
 public class SipCallOutInfoBean extends SipCallOutBean {
+    //SIP电话类型 CALL_OUT 外呼 CALL_IN 呼入
+    private SipPhoneType sipPhoneType;
     //1.客户2.线索3.陌生
     private int type;
     //来源
@@ -76,5 +80,13 @@ public class SipCallOutInfoBean extends SipCallOutBean {
 
     public void setLabel(String label) {
         this.label = label;
+    }
+
+    public SipPhoneType getSipPhoneType() {
+        return sipPhoneType;
+    }
+
+    public void setSipPhoneType(SipPhoneType sipPhoneType) {
+        this.sipPhoneType = sipPhoneType;
     }
 }

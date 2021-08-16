@@ -1,17 +1,14 @@
 package com.ipusoft.sip.manager;
 
-import android.util.Log;
-import android.widget.Toast;
-
-import com.ipusoft.context.AppContext;
 import com.ipusoft.context.bean.SeatInfo;
 import com.ipusoft.context.cache.AppCacheContext;
 import com.ipusoft.context.component.ToastUtils;
 import com.ipusoft.context.constant.HttpStatus;
-import com.ipusoft.context.utils.GsonUtils;
-import com.ipusoft.context.utils.StringUtils;
+import com.ipusoft.logger.XLogger;
 import com.ipusoft.mmkv.datastore.CommonDataRepo;
 import com.ipusoft.sip.SipCacheApp;
+import com.ipusoft.utils.GsonUtils;
+import com.ipusoft.utils.StringUtils;
 
 /**
  * author : GWFan
@@ -43,16 +40,19 @@ public class SipPhoneManager {
                 && StringUtils.isNotEmpty(seatInfo.getSdkSecret())
                 && StringUtils.isNotEmpty(seatInfo.getApiKey())
                 && StringUtils.isNotEmpty(seatInfo.getPassword())) {
-            String status = seatInfo.getStatus();
+            String status = seatInfo.getHttpStatus();
             if (StringUtils.equals(HttpStatus.SUCCESS, status)) {
+                XLogger.d("callPhoneBySip：" + cPhone);
                 if (StringUtils.isNotEmpty(cPhone)) {
                     String str = SipManager.getInstance().makeCall(cPhone);
                     setCallId(str);
                 }
             } else {
+                XLogger.d(seatInfo.getMsg());
                 ToastUtils.showMessage(seatInfo.getMsg());
             }
         } else {
+            XLogger.d("查询坐席信息失败1");
             ToastUtils.showMessage("查询坐席信息失败");
         }
     }
@@ -60,7 +60,7 @@ public class SipPhoneManager {
     public static void setCallId(String str) {
         if (StringUtils.isNotEmpty(str)) {
             String[] s = str.split("_");
-            if (s != null && s.length >= 4) {
+            if (s.length >= 4) {
                 String callId = s[3];
                 AppCacheContext.setSIPCallOutId(callId);
             }
@@ -75,19 +75,20 @@ public class SipPhoneManager {
                     && StringUtils.isNotEmpty(seatInfo.getSdkSecret())
                     && StringUtils.isNotEmpty(seatInfo.getApiKey())
                     && StringUtils.isNotEmpty(seatInfo.getPassword())) {
-                String status = seatInfo.getStatus();
+                String status = seatInfo.getHttpStatus();
                 if (StringUtils.equals(HttpStatus.SUCCESS, status)) {
                     String cPhone = SipCacheApp.getSIPCallOutNumber();
-                    Log.d(TAG, "callPhoneBySip:cPhone->" + cPhone);
+                    XLogger.d("reCallPhoneBySip：" + cPhone);
                     if (StringUtils.isNotEmpty(cPhone)) {
-                        Log.d(TAG, "callPhoneBySip: ------" + Thread.currentThread().getName());
                         String str = SipManager.getInstance().makeCall(cPhone);
                         setCallId(str);
                     }
                 } else {
+                    XLogger.d(seatInfo.getMsg());
                     ToastUtils.showMessage(seatInfo.getMsg());
                 }
             } else {
+                XLogger.d("查询坐席信息失败");
                 ToastUtils.showMessage("查询坐席信息失败");
             }
         }
@@ -103,10 +104,17 @@ public class SipPhoneManager {
     /**
      * 发送按键
      *
-     * @param str
+     * @param str 按键key
      */
     public static void dialDTMF(String str) {
         SipManager.getInstance().dialDTMF(str);
+    }
+
+    /**
+     * 接听
+     */
+    public static void answerCall() {
+        SipManager.getInstance().answerCall();
     }
 
     /**
@@ -114,14 +122,14 @@ public class SipPhoneManager {
      */
     public static void registerSip() {
         SeatInfo seatInfo = CommonDataRepo.getSeatInfo();
-        Log.d(TAG, "registerSip: 1--------------" + GsonUtils.toJson(seatInfo));
         if (seatInfo != null && StringUtils.isNotEmpty(seatInfo.getSeatNo())
                 && StringUtils.isNotEmpty(seatInfo.getSdkSecret())
                 && StringUtils.isNotEmpty(seatInfo.getApiKey())
                 && StringUtils.isNotEmpty(seatInfo.getPassword())) {
             SipManager.getInstance().registerSip(seatInfo);
         } else {
-            Toast.makeText(AppContext.getActivityContext(), "注册线路失败,无坐席信息", Toast.LENGTH_SHORT).show();
+            XLogger.d("注册线路失败,无坐席信息,seatInfo：" + GsonUtils.toJson(seatInfo));
+            ToastUtils.showMessage("注册线路失败,无坐席信息");
         }
     }
 }

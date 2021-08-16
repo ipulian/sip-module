@@ -13,24 +13,35 @@ public class ITimerTask {
     private Timer timer;
     private final TimerTask task;
     private final long period;
+    private final long delay;
 
-    public ITimerTask(long time, TimerTask task) {
+    public ITimerTask(long period, TimerTask task) {
         this.task = task;
-        this.period = time;
+        this.period = period;
+        this.delay = 0;
+        if (timer == null) {
+            timer = new Timer();
+        }
+    }
+
+    public ITimerTask(long period, long delay, TimerTask task) {
+        this.task = task;
+        this.period = period;
+        this.delay = delay;
         if (timer == null) {
             timer = new Timer();
         }
     }
 
     public void start() {
-        timer.schedule(task, 0, period);//每隔time时间段就执行一次
+        timer.schedule(task, delay, period);
     }
 
     public void stop() {
         if (timer != null) {
             timer.cancel();
             if (task != null) {
-                task.cancel();  //将原任务从队列中移除
+                task.cancel();
             }
         }
     }

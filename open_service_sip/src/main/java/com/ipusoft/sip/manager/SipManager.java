@@ -1,14 +1,13 @@
 package com.ipusoft.sip.manager;
 
 
-import android.util.Log;
-
 import com.ipusoft.context.AppRuntimeContext;
-import com.ipusoft.context.utils.GsonUtils;
-import com.ipusoft.context.utils.StringUtils;
+import com.ipusoft.context.bean.SeatInfo;
+import com.ipusoft.logger.XLogger;
 import com.ipusoft.sip.MyLogWriter;
 import com.ipusoft.sip.MySipPhoneEvent;
-import com.ipusoft.context.bean.SeatInfo;
+import com.ipusoft.utils.GsonUtils;
+import com.ipusoft.utils.StringUtils;
 
 import org.pjsip.pjsua2.LogConfig;
 import org.pjsip.pjsua2.Phone;
@@ -44,18 +43,13 @@ public class SipManager {
      * 注册sip
      */
     public void registerSip(SeatInfo seatInfo) {
-        Log.d(TAG, "registerSip: 2--------------" + GsonUtils.toJson(seatInfo));
         if (seatInfo == null || StringUtils.isEmpty(seatInfo.getSeatNo())
                 || StringUtils.isEmpty(seatInfo.getSdkSecret()) ||
                 StringUtils.isEmpty(seatInfo.getApiKey())
                 || StringUtils.isEmpty(seatInfo.getPassword())) {
-            Log.d(TAG, "registerSip: 参数错误,坐席信息不能为空");
+            XLogger.d("registerSip: 参数错误,坐席信息不能为空,seatInfo：" + GsonUtils.toJson(seatInfo));
             return;
         }
-//        if (StringUtils.isEmpty(sipUrl)) {
-//            Log.d(TAG, "registerSip: 参数错误,SIP线路不能为空");
-//            return;
-//        }
         if (logWriter == null)
             logWriter = new MyLogWriter();
 
@@ -69,9 +63,6 @@ public class SipManager {
             logConfig.setConsoleLevel(LOG_LEVEL);
             logConfig.setWriter(logWriter);
         }
-        Log.d(TAG, "registerSip: 3--------1------" + GsonUtils.toJson(seatInfo));
-        Log.d(TAG, "registerSip: 4---------1-----" + AppRuntimeContext.OPEN_BASE_URL);
-        Log.d(TAG, "registerSip: --------》" + (phoneConfig == null));
         if (phoneConfig == null) {
             phoneConfig = new PhoneConfig();
             phoneConfig.setLogConfig(logConfig);
@@ -94,12 +85,12 @@ public class SipManager {
      * @param cPhone 外呼号码
      */
     public String makeCall(String cPhone) {
-        Log.d(TAG, "makeCall: ---------》" + cPhone);
+        XLogger.d("makeCall：" + cPhone);
         String recordId = "";
         if (phone != null) {
             recordId = phone.callout(cPhone);
         }
-        Log.d(TAG, "makeCall: --recordId-----》" + recordId);
+        XLogger.d("makeCall->recordId：" + recordId);
         return recordId;
     }
 
@@ -150,9 +141,23 @@ public class SipManager {
         }
     }
 
+    /**
+     * 按键
+     *
+     * @param digital 按键key
+     */
     public void dialDTMF(String digital) {
         if (phone != null) {
             phone.dialDTMF(digital);
+        }
+    }
+
+    /**
+     * 接听
+     */
+    public void answerCall() {
+        if (phone != null) {
+            phone.answerCall();
         }
     }
 }

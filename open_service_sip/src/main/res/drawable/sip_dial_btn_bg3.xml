@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?><!-- 默认圆角按钮样式 -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:state_pressed="true">
+        <shape android:shape="oval">
+            <solid android:color="@color/black25" />
+        </shape>
+    </item>
+
+    <item android:state_focused="true">
+        <shape android:shape="oval">
+            <solid android:color="@color/black25" />
+        </shape>
+    </item>
+
+    <item>
+        <shape android:shape="rectangle" />
+    </item>
+
+</selector>
