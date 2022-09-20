@@ -7,15 +7,16 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.ipusoft.context.AppContext;
-import com.ipusoft.context.component.WrapLinearLayout;
+import com.ipusoft.context.component.FlowLinearLayout;
+import com.ipusoft.context.constant.SipState;
+import com.ipusoft.sip.R;
+import com.ipusoft.sip.bean.SipCallOutInfoBean;
+import com.ipusoft.sip.view.SipPhoneFloatingView;
 import com.ipusoft.utils.DateTimeUtils;
 import com.ipusoft.utils.ResourceUtils;
 import com.ipusoft.utils.SizeUtils;
 import com.ipusoft.utils.StringUtils;
-import com.ipusoft.sip.R;
-import com.ipusoft.sip.bean.SipCallOutInfoBean;
-import com.ipusoft.context.constant.SipState;
-import com.ipusoft.sip.view.SipPhoneFloatingView;
+import com.ipusoft.utils.ThreadUtils;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -41,6 +42,8 @@ public class SipPhoneFloatingViewAdapter {
     public void updateSipStatus(SipState sipCallStatus) {
         if (tvStatus != null) {
             tvStatus.setText(sipCallStatus.getStr());
+        } else {
+            ThreadUtils.runOnUiThreadDelayed(() -> tvStatus.setText(sipCallStatus.getStr()), 1200);
         }
     }
 
@@ -71,11 +74,22 @@ public class SipPhoneFloatingViewAdapter {
         if (bean != null) {
             TextView tvPhone = mView.findViewById(R.id.tv_phone);
             TextView tvPhoneArea = mView.findViewById(R.id.tv_phone_area);
+            TextView tvPhoneInfo = mView.findViewById(R.id.tv_phone_info);
             tvStatus = mView.findViewById(R.id.tv_status);
 
             if (StringUtils.isNotEmpty(bean.getPhoneArea())) {
                 tvPhoneArea.setVisibility(View.VISIBLE);
                 tvPhoneArea.setText(bean.getPhoneArea());
+            } else {
+                tvPhoneArea.setVisibility(View.GONE);
+            }
+            if (StringUtils.isNotEmpty(bean.getVirtualNumber()) || StringUtils.isNotEmpty(bean.getChannel())) {
+                tvPhoneInfo.setVisibility(View.VISIBLE);
+                String str = "小号：" + bean.getVirtualNumber();
+                if (StringUtils.isNotEmpty(bean.getChannel())) {
+                    str += "(" + bean.getChannel() + ")";
+                }
+                tvPhoneInfo.setText(str);
             } else {
                 tvPhoneArea.setVisibility(View.GONE);
             }
@@ -95,10 +109,13 @@ public class SipPhoneFloatingViewAdapter {
     }
 
     private void initDetailsView(SipCallOutInfoBean bean) {
+        TextView tvName = mView.findViewById(R.id.tv_name);
+        FlowLinearLayout wllLabel = mView.findViewById(R.id.wll_label);
+        LinearLayout llItemRoot = mView.findViewById(R.id.ll_item_root);
         if (bean != null) {
-            TextView tvName = mView.findViewById(R.id.tv_name);
-            WrapLinearLayout wllLabel = mView.findViewById(R.id.wll_label);
-            LinearLayout llItemRoot = mView.findViewById(R.id.ll_item_root);
+            llItemRoot.setVisibility(View.VISIBLE);
+            llLabel.setVisibility(View.VISIBLE);
+            tvName.setVisibility(View.VISIBLE);
             String str = bean.getName();
             if (StringUtils.isNotEmpty(str)) {
                 if (StringUtils.isNotEmpty(bean.getSex())) {
@@ -108,6 +125,8 @@ public class SipPhoneFloatingViewAdapter {
                     str += " · " + bean.getStage();
                 }
                 tvName.setText(str);
+            } else {
+                tvName.setText("");
             }
 
             HashMap<String, String> itemMap = new LinkedHashMap<>();
@@ -124,6 +143,8 @@ public class SipPhoneFloatingViewAdapter {
             initLabel(wllLabel, bean.getLabel());
         } else {
             llLabel.setVisibility(View.GONE);
+            tvName.setText("");
+            llItemRoot.setVisibility(View.GONE);
         }
     }
 
@@ -133,11 +154,12 @@ public class SipPhoneFloatingViewAdapter {
      * @param wllLabel
      * @param label
      */
-    protected void initLabel(WrapLinearLayout wllLabel, String label) {
+    protected void initLabel(FlowLinearLayout wllLabel, String label) {
         if (StringUtils.isNotEmpty(label)) {
             llLabel.setVisibility(View.VISIBLE);
             View labelView;
             TextView tvLabel;
+            wllLabel.removeAllViews();
             for (String str : label.split(",")) {
                 labelView = LayoutInflater.from(AppContext.getAppContext()).inflate(R.layout.cell_label, null);
                 LinearLayout llLabelRoot = labelView.findViewById(R.id.ll_label_root);

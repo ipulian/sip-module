@@ -10,5 +10,13 @@
                 <action android:name="com.ipusoft.siplibrary.service.SipCallOutFloatingService" />
             </intent-filter>
         </service>
+
+
+        <service android:name="com.ipusoft.sip.service.SipCoreService">
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
+                <action android:name="com.ipusoft.siplibrary.service.SipCoreService" />
+            </intent-filter>
+        </service>
     </application>
 </manifest>

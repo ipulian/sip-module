@@ -1,6 +1,8 @@
 package com.ipusoft.sip.manager;
 
 
+import android.util.Log;
+
 import com.ipusoft.context.AppRuntimeContext;
 import com.ipusoft.context.bean.SeatInfo;
 import com.ipusoft.logger.XLogger;
@@ -50,6 +52,7 @@ public class SipManager {
             XLogger.d("registerSip: 参数错误,坐席信息不能为空,seatInfo：" + GsonUtils.toJson(seatInfo));
             return;
         }
+        Log.d(TAG, "registerSip: .--------->" + GsonUtils.toJson(seatInfo));
         if (logWriter == null)
             logWriter = new MyLogWriter();
 
@@ -67,6 +70,10 @@ public class SipManager {
             phoneConfig = new PhoneConfig();
             phoneConfig.setLogConfig(logConfig);
             phoneConfig.setLl_api_server(AppRuntimeContext.OPEN_BASE_URL);
+
+            Log.d(TAG, "registerSip: ----------->" + AppRuntimeContext.OPEN_BASE_URL);
+//            phoneConfig.setLl_api_server("https://api.51lianlian.cn");
+            // Log.d(TAG, "registerSip: .----------->" + GsonUtils.toJson(seatInfo));
             phoneConfig.setApi_key(seatInfo.getApiKey());
             phoneConfig.setSdk_secret(seatInfo.getSdkSecret());
             phoneConfig.setSeatId(seatInfo.getSeatNo());

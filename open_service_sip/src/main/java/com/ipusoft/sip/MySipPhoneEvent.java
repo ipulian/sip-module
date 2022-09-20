@@ -17,7 +17,9 @@ import com.ipusoft.sip.constant.SipPhoneType;
 import com.ipusoft.sip.constant.SipType;
 import com.ipusoft.sip.manager.SipManager;
 import com.ipusoft.sip.manager.SipPhoneManager;
+import com.ipusoft.sip.service.SipCoreService;
 import com.ipusoft.utils.ArrayUtils;
+import com.ipusoft.utils.GsonUtils;
 import com.ipusoft.utils.StringUtils;
 import com.ipusoft.utils.ThreadUtils;
 
@@ -41,6 +43,7 @@ public class MySipPhoneEvent extends PhoneEvent {
 
     @Override
     public void msg(String date, String type, int code, String msg) {
+        Log.d(TAG, "msg: ------------->" + code + "---->" + msg);
         XLogger.d("date：" + date + "\ntype：" + type + "\ncode：" + code + "\nmsg：" + msg + "\n");
         if (ArrayUtils.isNotEmpty(sipStatusChangedListenerList)) {
             XLogger.d("sipStatusChangedListenerList.size：" + ArrayUtils.getListSize(sipStatusChangedListenerList));
@@ -54,6 +57,7 @@ public class MySipPhoneEvent extends PhoneEvent {
     }
 
     private void preHandleStatus(String type, SipResponse sipResponse) {
+        Log.d(TAG, "preHandleStatus: ------------》" + type + "---->" + GsonUtils.toJson(sipResponse));
         int code = sipResponse.getCode();
         String msg = sipResponse.getMsg();
         if (StringUtils.equals(SipType.INIT.getType(), type)) {
@@ -63,19 +67,24 @@ public class MySipPhoneEvent extends PhoneEvent {
                 for (BaseSipStatusChangedListener listener : sipStatusChangedListenerList) {
                     listener.onSipResponseError(sipResponse);
                 }
+            } else {
+                SipManager.getInstance().login();
             }
         } else if (StringUtils.equals(SipType.LOGIN.getType(), type)) {
             switch (code) {
                 case LoginCode.CODE_1:
                     XLogger.d("login: 已签入");
                     SipPhoneManager.reCallPhoneBySip();
+                    SipCoreService.setSipStatus(1);
                     break;
                 case LoginCode.CODE_0:
                     XLogger.d("login: 签入失败，重新签入");
                     SipManager.getInstance().login();
+                    SipCoreService.setSipStatus(0);
                     break;
                 case LoginCode.CODE_M1:
                 case LoginCode.CODE_M99:
+                    SipCoreService.setSipStatus(0);
                     ThreadUtils.runOnUiThread(ToastUtils::dismiss);
                     for (BaseSipStatusChangedListener listener : sipStatusChangedListenerList) {
                         listener.onSipResponseError(sipResponse);
@@ -83,10 +92,12 @@ public class MySipPhoneEvent extends PhoneEvent {
                     break;
                 case LoginCode.CODE_M100:
                     XLogger.d("login: code=-100:uninit completed");
+                    SipCoreService.setSipStatus(0);
                     SipManager.getInstance().unregisterSip();
                     break;
                 case LoginCode.CODE_M200:
                     XLogger.d("login: code=-200:注销 completed");
+                    SipCoreService.setSipStatus(0);
                     SipManager.getInstance().releaseRes();
                     SipPhoneManager.registerSip();
                     break;
@@ -134,6 +145,18 @@ public class MySipPhoneEvent extends PhoneEvent {
                 case CallStatusCode.CODE_6:
                     if (code == CallStatusCode.CODE_2) {
                         SipCallOutInfoBean sipCallOutInfoBean = new SipCallOutInfoBean();
+                        if (StringUtils.isNotEmpty(msg)) {
+                            String[] split = msg.split("<");
+                            if (split.length != 0) {
+                                String number = split[0];
+                                Log.d(TAG, "msg: .-------------1>" + number);
+                                if (StringUtils.isNotEmpty(number) && number.length() > 4) {
+                                    String callInNumber = number.substring(1, number.length() - 2);
+                                    Log.d(TAG, "msg: .------------->" + callInNumber);
+                                    sipCallOutInfoBean.setPhone(callInNumber);
+                                }
+                            }
+                        }
                         sipCallOutInfoBean.setSipPhoneType(SipPhoneType.CALL_IN);
                         SipCacheApp.setSIPCallOutBean(sipCallOutInfoBean);
                     }

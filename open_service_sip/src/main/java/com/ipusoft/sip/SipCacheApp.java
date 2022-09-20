@@ -1,6 +1,9 @@
 package com.ipusoft.sip;
 
+import android.util.Log;
+
 import com.ipusoft.context.IpuSoftSDK;
+import com.ipusoft.context.bean.Customer;
 import com.ipusoft.sip.bean.SipCallOutInfoBean;
 
 /**
@@ -25,9 +28,20 @@ public abstract class SipCacheApp extends IpuSoftSDK {
      */
     private static String SIPCallId;
 
+    /**
+     * sip呼入小号和渠道
+     */
+    private static String sipCallInVirtualNumber;
+    private static String sipCallInChannel;
+    private static Customer customer;
+
     public static void setSIPCallOutBean(SipCallOutInfoBean bean) {
-        String phone = bean.getPhone();
-        setSIPCallOutNumber(phone);
+        if (bean != null) {
+            String phone = bean.getPhone();
+            setSIPCallOutNumber(phone);
+        } else {
+            setSIPCallOutNumber("");
+        }
         SipCacheApp.sipCallOutInfoBean = bean;
     }
 
@@ -49,5 +63,24 @@ public abstract class SipCacheApp extends IpuSoftSDK {
 
     public static void setSIPCallId(String SIPCallId) {
         SipCacheApp.SIPCallId = SIPCallId;
+    }
+
+    public static void setSipCallInNumberInfo(String virtualNumber, String channel, Customer customer1) {
+        Log.d("TAG123", "setSipCallInNumberInfo: .----->" + virtualNumber + "---->" + channel);
+        sipCallInVirtualNumber = virtualNumber;
+        sipCallInChannel = channel;
+        customer = customer1;
+    }
+
+    public static String getSipCallInVirtualNumber() {
+        return sipCallInVirtualNumber;
+    }
+
+    public static String getSipCallInChannel() {
+        return sipCallInChannel;
+    }
+
+    public static Customer getSipCallInCustomer() {
+        return customer;
     }
 }

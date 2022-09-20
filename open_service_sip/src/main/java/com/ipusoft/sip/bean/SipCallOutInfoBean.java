@@ -26,6 +26,9 @@ public class SipCallOutInfoBean extends SipCallOutBean {
     //标签
     private String label;
 
+    private String virtualNumber;
+    private String channel;
+
     public int getType() {
         return type;
     }
@@ -88,5 +91,21 @@ public class SipCallOutInfoBean extends SipCallOutBean {
 
     public void setSipPhoneType(SipPhoneType sipPhoneType) {
         this.sipPhoneType = sipPhoneType;
+    }
+
+    public String getVirtualNumber() {
+        return virtualNumber;
+    }
+
+    public void setVirtualNumber(String virtualNumber) {
+        this.virtualNumber = virtualNumber;
+    }
+
+    public String getChannel() {
+        return channel;
+    }
+
+    public void setChannel(String channel) {
+        this.channel = channel;
     }
 }
