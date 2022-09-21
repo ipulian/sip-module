@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
-import com.gyf.immersionbar.ImmersionBar;
+//import com.gyf.immersionbar.ImmersionBar;
 import com.ipusoft.context.AppContext;
 import com.ipusoft.context.component.ToastUtils;
 import com.ipusoft.context.manager.IWindowManager;
@@ -148,12 +148,12 @@ public class SipPhoneFloatingView extends LinearLayout implements View.OnClickLi
                     updateViewBySipPhoneType(sipPhoneType);
                     mWindowManager.addView(view, mLayoutParams);
                 }
-                ImmersionBar.with(AppContext.getActivityContext())
-                        .autoDarkModeEnable(true)
-                        .autoStatusBarDarkModeEnable(true)
-                        .transparentStatusBar()
-                        .statusBarColor(R.color.dial_bg)
-                        .init();
+//                ImmersionBar.with(AppContext.getActivityContext())
+//                        .autoDarkModeEnable(true)
+//                        .autoStatusBarDarkModeEnable(true)
+//                        .transparentStatusBar()
+//                        .statusBarColor(R.color.dial_bg)
+//                        .init();
                 OnHeadsetPlugListenerImpl.setOnHeadsetPlugListener(this);
             } else {
                 ToastUtils.showMessage("请打开悬浮窗权限");
@@ -181,12 +181,12 @@ public class SipPhoneFloatingView extends LinearLayout implements View.OnClickLi
             if (mIsShow) {
                 mIsShow = false;
                 mWindowManager.removeViewImmediate(view);
-                ImmersionBar.with(AppContext.getActivityContext())
-                        .autoDarkModeEnable(true)
-                        .autoStatusBarDarkModeEnable(true)
-                        .transparentStatusBar()
-                        .statusBarColor(R.color.themeColor)
-                        .init();
+//                ImmersionBar.with(AppContext.getActivityContext())
+//                        .autoDarkModeEnable(true)
+//                        .autoStatusBarDarkModeEnable(true)
+//                        .transparentStatusBar()
+//                        .statusBarColor(R.color.themeColor)
+//                        .init();
             }
         }
     }
