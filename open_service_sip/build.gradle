@@ -68,15 +68,15 @@ dependencies {
     if (isApp) {
         implementation project(":context:context")
     } else {
-        implementation 'com.github.ipulian:ipusdk:1.6.23'
-        //implementation project(":context:context")
+         implementation 'com.github.ipulian:ipusdk:1.6.24'
+      //  implementation project(":context:context")
     }
 
     /**
      *  沉浸式状态栏
      *  https://github.com/gyf-dev/ImmersionBar
      */
-    implementation 'com.gyf.immersionbar:immersionbar:3.0.0'
-    implementation 'com.gyf.immersionbar:immersionbar-components:3.0.0'
-    implementation 'com.gyf.immersionbar:immersionbar-ktx:3.0.0'
+//    implementation 'com.gyf.immersionbar:immersionbar:3.2.1'
+//    implementation 'com.gyf.immersionbar:immersionbar-components:3.2.1'
+//    implementation 'com.gyf.immersionbar:immersionbar-ktx:3.2.1'
 }
