@@ -4,7 +4,9 @@
 
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <application>
-        <service android:name="com.ipusoft.sip.service.SipPhoneFloatingService">
+        <service
+            android:name="com.ipusoft.sip.service.SipPhoneFloatingService"
+            android:exported="false">
             <intent-filter>
                 <category android:name="android.intent.category.DEFAULT" />
                 <action android:name="com.ipusoft.siplibrary.service.SipCallOutFloatingService" />
@@ -12,7 +14,9 @@
         </service>
 
 
-        <service android:name="com.ipusoft.sip.service.SipCoreService">
+        <service
+            android:name="com.ipusoft.sip.service.SipCoreService"
+            android:exported="false">
             <intent-filter>
                 <category android:name="android.intent.category.DEFAULT" />
                 <action android:name="com.ipusoft.siplibrary.service.SipCoreService" />
