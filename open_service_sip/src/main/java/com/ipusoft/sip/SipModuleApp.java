@@ -8,6 +8,7 @@ import com.ipusoft.context.AppContext;
 import com.ipusoft.context.bean.SeatInfo;
 import com.ipusoft.context.iface.BaseSipStatusChangedListener;
 import com.ipusoft.sip.ifaceimpl.OnHeadsetPlugListenerImpl;
+import com.ipusoft.sip.manager.SipFloatingViewIntentManager;
 import com.ipusoft.sip.manager.SipPhoneManager;
 import com.ipusoft.sip.receiver.HeadsetPlugReceiver;
 
@@ -57,6 +58,9 @@ public class SipModuleApp extends SipCacheApp {
      */
     public void registerSipService(SeatInfo seatInfo) {
         SipPhoneManager.registerSip();
+
+        //定时心跳
+        SipFloatingViewIntentManager.startSipHeartBeatService();
     }
 
 

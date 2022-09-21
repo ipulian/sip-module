@@ -53,6 +53,8 @@ public class MySipPhoneEvent extends PhoneEvent {
             sipResponse.setType(type);
             sipResponse.setMsg(msg);
             preHandleStatus(type, sipResponse);
+        } else {
+            Log.d(TAG, "sipStatusChangedListenerList: -------------------");
         }
     }
 
@@ -118,6 +120,8 @@ public class MySipPhoneEvent extends PhoneEvent {
                     XLogger.d("终端异常，需重新初始化，再呼叫");
                     break;
                 case CallStatusCode.CODE_M88:
+
+                    Log.d(TAG, "preHandleStatus: ---------");
                     XLogger.d("分机状态错误，需尝试登陆(login即可)，再呼叫");
                     SipManager.getInstance().login();
                     break;

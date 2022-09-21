@@ -47,8 +47,7 @@ public class SipManager {
     public void registerSip(SeatInfo seatInfo) {
         if (seatInfo == null || StringUtils.isEmpty(seatInfo.getSeatNo())
                 || StringUtils.isEmpty(seatInfo.getSdkSecret()) ||
-                StringUtils.isEmpty(seatInfo.getApiKey())
-                || StringUtils.isEmpty(seatInfo.getPassword())) {
+                StringUtils.isEmpty(seatInfo.getApiKey())) {
             XLogger.d("registerSip: 参数错误,坐席信息不能为空,seatInfo：" + GsonUtils.toJson(seatInfo));
             return;
         }
