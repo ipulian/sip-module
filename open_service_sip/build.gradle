@@ -68,8 +68,8 @@ dependencies {
     if (isApp) {
         implementation project(":context:context")
     } else {
-        implementation 'com.github.ipulian:ipusdk:1.6.27'
-        //implementation project(":context:context")
+        implementation 'com.github.ipulian:ipusdk:1.6.29'
+        // implementation project(":context:context")
     }
 
     /**
@@ -79,4 +79,18 @@ dependencies {
 //    implementation 'com.gyf.immersionbar:immersionbar:3.2.1'
 //    implementation 'com.gyf.immersionbar:immersionbar-components:3.2.1'
 //    implementation 'com.gyf.immersionbar:immersionbar-ktx:3.2.1'
+
+    /**
+     * Retrofit2
+     */
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.2'
+    implementation 'com.squareup.retrofit2:adapter-rxjava3:2.9.0'
+
+    /**
+     * RxJava + RxAndroid
+     */
+    implementation "io.reactivex.rxjava3:rxjava:3.0.12"
+    implementation 'io.reactivex.rxjava3:rxandroid:3.0.0'
 }
