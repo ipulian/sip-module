@@ -29,6 +29,8 @@ dependencies {
 - 1.通过SIP外呼(需要先申请android.permission.RECORD_AUDIO权限和 android.permission.SYSTEM_OVERLAY_WINDOW权限)
 ```java
 SipPhoneManager.callPhoneBySip(phone);
+//OR 带扩展字段外呼
+SipPhoneManager.callPhoneBySip(phone,extendJson);
 ````
 - 2.注册SIP通话状态的listener
 ```java
