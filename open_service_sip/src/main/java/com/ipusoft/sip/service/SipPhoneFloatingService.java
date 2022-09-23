@@ -190,6 +190,7 @@ public class SipPhoneFloatingService extends BaseLifeCycleService implements OnS
 
     @Override
     public void hungUp() {
+        Log.d(TAG, "hungUp: --------------->111111");
         SipCacheApp.setSIPCallOutBean(null);
         SipCacheApp.setSipCallInNumberInfo("", "", null);
         SipPhoneManager.dropPhone();

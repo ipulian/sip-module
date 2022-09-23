@@ -71,7 +71,7 @@ public class SipFloatingViewIntentManager {
                     .postValue(sipCallOutInfoBean);
         } else {
             //Log.d(TAG, "startSipCallOutFloatingService: ===============2");
-            Log.d(TAG, "startSipCallOutFloatingService: -----------2");
+            Log.d(TAG, "startSipCallOutFloatingService: -----------2" + GsonUtils.toJson(sipCallOutInfoBean));
             Intent intent = new Intent(AppContext.getAppContext(), SipPhoneFloatingService.class);
             intent.setAction("com.ipusoft.siplibrary.service.SipCallOutFloatingService");
             intent.putExtra(LiveDataConstant.WINDOW_SHOW_SIP_CALL, GsonUtils.toJson(sipCallOutInfoBean));

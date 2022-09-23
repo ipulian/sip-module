@@ -22,6 +22,9 @@ public class SipPhoneManager {
     private static final String TAG = "SipPhoneManager";
     private static boolean flag = false;
 
+    //TODO
+    private static String extend = "";
+
     public static void setFlag(boolean f) {
         flag = f;
     }
@@ -37,6 +40,7 @@ public class SipPhoneManager {
      */
     public static void callPhoneBySipForLianLian(String cPhone) {
         flag = true;
+        extend = "";
         SeatInfo seatInfo = CommonDataRepo.getSeatInfo();
         if (seatInfo != null && StringUtils.isNotEmpty(seatInfo.getSeatNo())
                 && StringUtils.isNotEmpty(seatInfo.getSdkSecret())
@@ -65,6 +69,8 @@ public class SipPhoneManager {
         sipCallOutInfoBean.setSipPhoneType(SipPhoneType.CALL_OUT);
         SipCacheApp.setSIPCallOutBean(sipCallOutInfoBean);
 
+        extend = "";
+
         flag = true;
         SeatInfo seatInfo = CommonDataRepo.getSeatInfo();
         if (seatInfo != null && StringUtils.isNotEmpty(seatInfo.getSeatNo())
@@ -76,6 +82,38 @@ public class SipPhoneManager {
                 XLogger.d("callPhoneBySip：" + cPhone);
                 if (StringUtils.isNotEmpty(cPhone)) {
                     String str = SipManager.getInstance().makeCall(cPhone);
+                    setCallId(str);
+                }
+            } else {
+                XLogger.d(seatInfo.getMsg());
+                ToastUtils.showMessage(seatInfo.getMsg());
+            }
+        } else {
+            XLogger.d("查询坐席信息失败1");
+            ToastUtils.showMessage("查询坐席信息失败");
+        }
+    }
+
+
+    public static void callPhoneBySip(String cPhone, String ex) {
+        SipCallOutInfoBean sipCallOutInfoBean = new SipCallOutInfoBean();
+        sipCallOutInfoBean.setPhone(cPhone);
+        sipCallOutInfoBean.setSipPhoneType(SipPhoneType.CALL_OUT);
+        SipCacheApp.setSIPCallOutBean(sipCallOutInfoBean);
+
+        extend = ex;
+
+        flag = true;
+        SeatInfo seatInfo = CommonDataRepo.getSeatInfo();
+        if (seatInfo != null && StringUtils.isNotEmpty(seatInfo.getSeatNo())
+                && StringUtils.isNotEmpty(seatInfo.getSdkSecret())
+                && StringUtils.isNotEmpty(seatInfo.getApiKey())
+                && StringUtils.isNotEmpty(seatInfo.getPassword())) {
+            String status = seatInfo.getHttpStatus();
+            if (StringUtils.equals(HttpStatus.SUCCESS, status)) {
+                XLogger.d("callPhoneBySip：" + cPhone);
+                if (StringUtils.isNotEmpty(cPhone)) {
+                    String str = SipManager.getInstance().makeCall(cPhone, extend);
                     setCallId(str);
                 }
             } else {
@@ -112,7 +150,13 @@ public class SipPhoneManager {
                     String cPhone = SipCacheApp.getSIPCallOutNumber();
                     XLogger.d("reCallPhoneBySip：" + cPhone);
                     if (StringUtils.isNotEmpty(cPhone)) {
-                        String str = SipManager.getInstance().makeCall(cPhone);
+                        String str = "";
+                        if (StringUtils.isNotEmpty(extend)) {
+                            str = SipManager.getInstance().makeCall(cPhone, extend);
+                            extend = "";
+                        } else {
+                            str = SipManager.getInstance().makeCall(cPhone);
+                        }
                         setCallId(str);
                     }
                 } else {

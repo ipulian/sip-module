@@ -95,6 +95,18 @@ public class SipManager {
         String recordId = "";
         if (phone != null) {
             recordId = phone.callout(cPhone);
+            //recordId = phone.callout(cPhone, "123455678");
+        }
+        XLogger.d("makeCall->recordId：" + recordId);
+        return recordId;
+    }
+
+    public String makeCall(String cPhone, String extend) {
+        XLogger.d("makeCall：" + cPhone);
+        String recordId = "";
+        if (phone != null) {
+            // recordId = phone.callout(cPhone);
+            recordId = phone.callout(cPhone, extend);
         }
         XLogger.d("makeCall->recordId：" + recordId);
         return recordId;
