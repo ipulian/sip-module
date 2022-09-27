@@ -73,10 +73,10 @@ public class SipCoreService extends BaseLifeCycleService {
 
     @Override
     protected void onIStartCommand(Intent intent, int flags, int startId) {
-        String token = AppContext.getToken();
-        if (StringUtils.isNotEmpty(token)) {
-            sipPing();
-        }
+        //  String token = AppContext.getToken();
+        // if (StringUtils.isNotEmpty(token)) {
+        sipPing();
+        //}
     }
 
     private void sipPing() {
@@ -146,12 +146,13 @@ public class SipCoreService extends BaseLifeCycleService {
                 SipManager.getInstance().resetLoginCnt();
             }, 6000);
 
-            Log.d(TAG, "sipPing: .------------->2");
             String localCallType = CommonDataRepo.getLocalCallType();
             XLogger.d("run: ------------>localCallType---->" + localCallType);
+            Log.d(TAG, "sipPing: .------------->" + localCallType);
             if (StringUtils.equals(CallTypeConfig.SIP.getType(), localCallType)) {
-                XLogger.d("run: ------------>SipCoreService---->sipPing");
                 SeatInfo seatInfo = CommonDataRepo.getSeatInfo();
+                Log.d(TAG, "sipPing: .------------->" + GsonUtils.toJson(seatInfo));
+                XLogger.d("run: ------------>SipCoreService---->sipPing" + GsonUtils.toJson(seatInfo));
                 if (seatInfo != null && StringUtils.isNotEmpty(seatInfo.getSeatNo())
                         && StringUtils.isNotEmpty(seatInfo.getSdkSecret())
                         && StringUtils.isNotEmpty(seatInfo.getApiKey())
@@ -161,7 +162,7 @@ public class SipCoreService extends BaseLifeCycleService {
                     headers.put("sign", getSign(GsonUtils.toJson(getParams())));
                     // Map<String, Object> params = new HashMap<>();
                     // params.
-                    // Log.d(TAG, "run: .---------->" + getParams());
+                    Log.d(TAG, "run: .---------->" + getParams());
                     SipService.Companion.sipPing(headers, EncodeUtils.base64Encode2String(GsonUtils.toJson(getParams()).getBytes(StandardCharsets.UTF_8)), new Observer<HttpResponse>() {
                         @Override
                         public void onSubscribe(@NonNull Disposable d) {

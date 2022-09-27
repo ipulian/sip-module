@@ -3,6 +3,7 @@ package com.ipusoft.sip;
 import android.bluetooth.BluetoothHeadset;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.util.Log;
 
 import com.ipusoft.context.AppContext;
 import com.ipusoft.context.bean.SeatInfo;
@@ -57,6 +58,9 @@ public class SipModuleApp extends SipCacheApp {
      * @param seatInfo
      */
     public void registerSipService(SeatInfo seatInfo) {
+
+        Log.d(TAG, "registerSipService: ------------1111");
+
         SipPhoneManager.registerSip();
 
         //定时心跳

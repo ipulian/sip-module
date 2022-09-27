@@ -81,6 +81,7 @@ public class SipFloatingViewIntentManager {
     }
 
     public static void startSipHeartBeatService() {
+        Log.d(TAG, "startSipHeartBeatService: ----------->1");
         if (ServiceManager.isServiceRunning(SipCoreService.class)) {
             LiveDataBus.get().with(LiveDataConstant.SIP_HEART_BEAT, Object.class)
                     .postValue(null);
@@ -92,9 +93,9 @@ public class SipFloatingViewIntentManager {
                 intent.setAction("com.ipusoft.siplibrary.service.SipCoreService");
                 intent.putExtra(LiveDataConstant.SIP_HEART_BEAT, "");
                 String token = AppContext.getToken();
-                if (StringUtils.isNotEmpty(token)) {
-                    AppContext.getAppContext().startService(intent);
-                }
+                //if (StringUtils.isNotEmpty(token)) {
+                AppContext.getAppContext().startService(intent);
+                //}
             }
         }
 
