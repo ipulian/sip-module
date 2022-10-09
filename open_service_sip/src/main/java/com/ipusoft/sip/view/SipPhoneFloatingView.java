@@ -5,6 +5,7 @@ import android.graphics.PixelFormat;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -14,7 +15,6 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
-//import com.gyf.immersionbar.ImmersionBar;
 import com.ipusoft.context.AppContext;
 import com.ipusoft.context.component.ToastUtils;
 import com.ipusoft.context.manager.IWindowManager;
@@ -69,6 +69,15 @@ public class SipPhoneFloatingView extends LinearLayout implements View.OnClickLi
         getWindowParams();
     }
 
+//    @Override
+//    public boolean dispatchKeyEvent(KeyEvent event) {
+//        if (event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
+//            dismiss();
+//            return true;
+//        }
+//        return super.dispatchKeyEvent(event);
+//    }
+
     public void getWindowParams() {
         if (mLayoutParams == null) {
             synchronized (IWindowManager.class) {
@@ -109,6 +118,7 @@ public class SipPhoneFloatingView extends LinearLayout implements View.OnClickLi
         sipWindowDialPanView.setOnSipDialPanClickListener(this);
         llDialPan.addView(sipWindowDialPanView);
 
+        view.findViewById(R.id.iv_mini).setOnClickListener(this);
         view.findViewById(R.id.iv_hung_up).setOnClickListener(this);
         view.findViewById(R.id.iv_dial_pan_show).setOnClickListener(this);
         view.findViewById(R.id.iv_audio_mode).setOnClickListener(this);
@@ -193,7 +203,12 @@ public class SipPhoneFloatingView extends LinearLayout implements View.OnClickLi
 
     @Override
     public void onClick(View v) {
-        if (v.getId() == R.id.iv_hung_up) {
+        if (v.getId() == R.id.iv_mini) {
+            dismiss();
+            if (listener != null) {
+                listener.miniWindow();
+            }
+        } else if (v.getId() == R.id.iv_hung_up) {
             if (listener != null) {
                 DeviceUtils.vibrate(30);
                 dismiss();

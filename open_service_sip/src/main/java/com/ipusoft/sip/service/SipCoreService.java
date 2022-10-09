@@ -146,6 +146,11 @@ public class SipCoreService extends BaseLifeCycleService {
                 SipManager.getInstance().resetLoginCnt();
             }, 6000);
 
+            if (CommonDataRepo.getSipSDKSignOut()) {
+                XLogger.d("----->SIP SDK 已退出登录");
+                return;
+            }
+
             String localCallType = CommonDataRepo.getLocalCallType();
             XLogger.d("run: ------------>localCallType---->" + localCallType);
             Log.d(TAG, "sipPing: .------------->" + localCallType);

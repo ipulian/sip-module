@@ -25,4 +25,9 @@ public interface OnSipCallOutWindowClickListener {
      */
     void answerCall();
 
+    /**
+     * 窗口最小化
+     */
+    void miniWindow();
+
 }

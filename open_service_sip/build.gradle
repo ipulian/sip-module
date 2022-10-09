@@ -68,7 +68,7 @@ dependencies {
     if (isApp) {
         implementation project(":context:context")
     } else {
-        implementation 'com.github.ipulian:ipusdk:1.6.33'
+        implementation 'com.github.ipulian:ipusdk:1.6.34'
         //implementation project(":context:context")
     }
 
@@ -76,6 +76,7 @@ dependencies {
      *  沉浸式状态栏
      *  https://github.com/gyf-dev/ImmersionBar
      */
+
 //    implementation 'com.gyf.immersionbar:immersionbar:3.2.1'
 //    implementation 'com.gyf.immersionbar:immersionbar-components:3.2.1'
 //    implementation 'com.gyf.immersionbar:immersionbar-ktx:3.2.1'

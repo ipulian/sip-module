@@ -8,6 +8,7 @@ import com.ipusoft.context.BaseLifeCycleService;
 import com.ipusoft.context.LiveDataBus;
 import com.ipusoft.context.bean.Customer;
 import com.ipusoft.context.component.ToastUtils;
+import com.ipusoft.context.component.VoiceMiniFloatingView;
 import com.ipusoft.context.constant.LiveDataConstant;
 import com.ipusoft.context.constant.SipState;
 import com.ipusoft.sip.ITimerTask;
@@ -38,6 +39,8 @@ public class SipPhoneFloatingService extends BaseLifeCycleService implements OnS
      */
     private SipPhoneFloatingView mFloatingView;
 
+    private VoiceMiniFloatingView miniFloatingView;
+
     private SipPhoneFloatingViewAdapter sipAdapter;
 
     private int i = 0;
@@ -49,6 +52,8 @@ public class SipPhoneFloatingService extends BaseLifeCycleService implements OnS
         mFloatingView.setOnClickListener(this);
         sipAdapter = new SipPhoneFloatingViewAdapter();
         mFloatingView.setAdapter(sipAdapter);
+
+        miniFloatingView = new VoiceMiniFloatingView(this);
     }
 
     @Override
@@ -207,5 +212,10 @@ public class SipPhoneFloatingService extends BaseLifeCycleService implements OnS
     @Override
     public void answerCall() {
         SipPhoneManager.answerCall();
+    }
+
+    @Override
+    public void miniWindow() {
+        miniFloatingView.show();
     }
 }
