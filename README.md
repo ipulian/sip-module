@@ -55,9 +55,14 @@ public class OnSipStatusChangedListenerImpl extends OnSipStatusChangedListener{
   //该方法在Application的onCreate中调用
  IpuSoftSDK.registerSipStatusChangedListener(new OnSipStatusChangedListenerImpl());
 ```
-- 2.SIP暂不支持发送短信
-- 3.获取通话状态,可以参考 IpuSDK(https://github.com/ipulian/ipusdk) 中的说明。
-- 4.展示通话弹屏,可以参考 IpuSDK(https://github.com/ipulian/ipusdk) 中的说明。
+- 3.SIP暂不支持发送短信
+- 4.获取通话状态,可以参考 IpuSDK(https://github.com/ipulian/ipusdk) 中的说明。
+- 5.展示通话弹屏,可以参考 IpuSDK(https://github.com/ipulian/ipusdk) 中的说明。
+- 6.如果APP退出登录，请同时退出SDK
+```java
+  //调用该方法之后，直到重新调用init()方法或者updateAuthInfo()方法，都不会再发送sip心跳)
+ IpuSoftSDK.signOut();
+```
 ## ProGuard rules
 ```
 -keep class com.ipusoft.sip.bean.** { *;}
