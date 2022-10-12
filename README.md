@@ -11,7 +11,8 @@ allprojects {
 }
 
 dependencies {
-    implementation 'com.github.ipulian:sip-module:latest-version'//使用时把 latest-version 替换成最新release版本
+                     //使用时把 latest-version 替换成最新release版本
+    implementation 'com.github.ipulian:sip-module:latest-version'
 }
 ```
 在AndroidManifest.xml中注册需要的权限
@@ -62,6 +63,11 @@ public class OnSipStatusChangedListenerImpl extends OnSipStatusChangedListener{
 ```java
   //调用该方法之后，直到重新调用init()方法或者updateAuthInfo()方法，都不会再发送sip心跳)
  IpuSoftSDK.signOut();
+```
+## Tips
+```
+由于SIP SDK 使用的是UDP通信协议，所以在进行SIP通话的过程中，
+务必保持手机屏幕常亮（Android手机在锁屏状态下，无法接收UDP数据包），否则将导致通话中断，直到重新点亮手机屏幕。
 ```
 ## ProGuard rules
 ```
