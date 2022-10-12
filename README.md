@@ -11,7 +11,8 @@ allprojects {
 }
 
 dependencies {
-    implementation 'com.github.ipulian:sip-module:latest-version'//使用时把 latest-version 替换成最新release版本
+                     //使用时把 latest-version 替换成最新release版本
+    implementation 'com.github.ipulian:sip-module:latest-version'
 }
 ```
 在AndroidManifest.xml中注册需要的权限
