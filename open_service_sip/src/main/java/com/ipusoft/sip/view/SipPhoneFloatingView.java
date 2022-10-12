@@ -102,6 +102,14 @@ public class SipPhoneFloatingView extends LinearLayout implements View.OnClickLi
     }
 
     private void initView(Context context) {
+
+        //保持屏幕常亮
+        try {
+            setKeepScreenOn(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         initWindow();
         showDialPan = false;
         flag = true;

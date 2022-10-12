@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.PowerManager;
 import android.util.Log;
+import android.view.WindowManager;
 
 import com.ipusoft.context.AppContext;
 import com.ipusoft.context.BaseLifeCycleService;
@@ -58,6 +59,14 @@ public class SipPhoneFloatingService extends BaseLifeCycleService implements OnS
         mFloatingView.setAdapter(sipAdapter);
 
         sipMiniFloatingView = new SipMiniFloatingView(this);
+
+        try {
+            if (AppContext.getActivityContext() != null) {
+                AppContext.getActivityContext().getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         PowerManager powerManager = (PowerManager) getSystemService(POWER_SERVICE);
         if (powerManager != null) {

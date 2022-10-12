@@ -243,6 +243,13 @@ public class SipMiniFloatingView extends View {
             }
             mWindowManager.addView(this, mLayoutParams);
             mIsShow = true;
+
+            //保持屏幕常亮
+            try {
+                setKeepScreenOn(true);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 

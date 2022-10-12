@@ -104,7 +104,7 @@ public class SipCoreService extends BaseLifeCycleService {
         return MD5Utils.getMD5(paramsJson + seatInfo.getSdkSecret());
     }
 
-    private static Map<String, Object> getParams() {
+    private static Map<String, Object> getMyParams() {
         HashMap<String, Object> params = new HashMap<>();
         String token = AppContext.getToken();
         String username = "";
@@ -164,11 +164,11 @@ public class SipCoreService extends BaseLifeCycleService {
                         && StringUtils.isNotEmpty(seatInfo.getPassword())) {
                     Map<String, String> headers = new HashMap<>();
                     headers.put("api_key", seatInfo.getApiKey());
-                    headers.put("sign", getSign(GsonUtils.toJson(getParams())));
+                    headers.put("sign", getSign(GsonUtils.toJson(getMyParams())));
                     // Map<String, Object> params = new HashMap<>();
                     // params.
-                    Log.d(TAG, "run: .---------->" + getParams());
-                    SipService.Companion.sipPing(headers, EncodeUtils.base64Encode2String(GsonUtils.toJson(getParams()).getBytes(StandardCharsets.UTF_8)), new Observer<HttpResponse>() {
+                    Log.d(TAG, "run: .---------->" + getMyParams());
+                    SipService.Companion.sipPing(headers, EncodeUtils.base64Encode2String(GsonUtils.toJson(getMyParams()).getBytes(StandardCharsets.UTF_8)), new Observer<HttpResponse>() {
                         @Override
                         public void onSubscribe(@NonNull Disposable d) {
 
