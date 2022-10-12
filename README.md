@@ -1,7 +1,7 @@
 # SIP通讯SDK
 **使用SIP通讯SDK之前，需要先集成 IpuSDK(https://github.com/ipulian/ipusdk)** 
 有一些公共方法，在IpuSDK中已经做了说明，这里不再赘述。
-首先可以通过 https://github.com/ipulian/sip-module.git 把该项目在Android Studio中直接运行。
+**首先可以通过 https://github.com/ipulian/sip-module.git 把该项目在Android Studio中直接运行。** 
 ## Setup
 ```gradle
 allprojects {
