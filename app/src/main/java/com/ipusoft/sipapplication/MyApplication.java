@@ -39,7 +39,7 @@ public class MyApplication extends Application {
 //                "db52c2c9c256857e16cf7ab02ba51210",
 //                "1001", "xxxxxx"));
 
-        //实现SIP状态listener(必须)
+        //实现SIP状态listener(非必须)
         IpuSoftSDK.registerSipStatusChangedListener(new OnSipStatusChangedListenerImpl());
     }
 }

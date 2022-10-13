@@ -45,17 +45,17 @@ public class MySipPhoneEvent extends PhoneEvent {
     public void msg(String date, String type, int code, String msg) {
         Log.d(TAG, "msg: ------------->" + code + "---->" + msg);
         XLogger.d("date：" + date + "\ntype：" + type + "\ncode：" + code + "\nmsg：" + msg + "\n");
-        if (ArrayUtils.isNotEmpty(sipStatusChangedListenerList)) {
-            XLogger.d("sipStatusChangedListenerList.size：" + ArrayUtils.getListSize(sipStatusChangedListenerList));
-            SipResponse sipResponse = new SipResponse();
-            sipResponse.setCode(code);
-            sipResponse.setDate(date);
-            sipResponse.setType(type);
-            sipResponse.setMsg(msg);
-            preHandleStatus(type, sipResponse);
-        } else {
-            Log.d(TAG, "sipStatusChangedListenerList: -------------------");
-        }
+        // if (ArrayUtils.isNotEmpty(sipStatusChangedListenerList)) {
+        XLogger.d("sipStatusChangedListenerList.size：" + ArrayUtils.getListSize(sipStatusChangedListenerList));
+        SipResponse sipResponse = new SipResponse();
+        sipResponse.setCode(code);
+        sipResponse.setDate(date);
+        sipResponse.setType(type);
+        sipResponse.setMsg(msg);
+        preHandleStatus(type, sipResponse);
+//        } else {
+//            Log.d(TAG, "sipStatusChangedListenerList: -------------------");
+//        }
     }
 
     private void preHandleStatus(String type, SipResponse sipResponse) {
@@ -66,8 +66,10 @@ public class MySipPhoneEvent extends PhoneEvent {
             if (code == InitCode.CODE_M1) {
                 XLogger.d("init：" + msg);
                 ThreadUtils.runOnUiThread(ToastUtils::dismiss);
-                for (BaseSipStatusChangedListener listener : sipStatusChangedListenerList) {
-                    listener.onSipResponseError(sipResponse);
+                if (ArrayUtils.isNotEmpty(sipStatusChangedListenerList)) {
+                    for (BaseSipStatusChangedListener listener : sipStatusChangedListenerList) {
+                        listener.onSipResponseError(sipResponse);
+                    }
                 }
             } else {
                 SipManager.getInstance().login();
@@ -88,8 +90,10 @@ public class MySipPhoneEvent extends PhoneEvent {
                 case LoginCode.CODE_M99:
                     SipCoreService.setSipStatus(0);
                     ThreadUtils.runOnUiThread(ToastUtils::dismiss);
-                    for (BaseSipStatusChangedListener listener : sipStatusChangedListenerList) {
-                        listener.onSipResponseError(sipResponse);
+                    if (ArrayUtils.isNotEmpty(sipStatusChangedListenerList)) {
+                        for (BaseSipStatusChangedListener listener : sipStatusChangedListenerList) {
+                            listener.onSipResponseError(sipResponse);
+                        }
                     }
                     break;
                 case LoginCode.CODE_M100:
@@ -110,8 +114,10 @@ public class MySipPhoneEvent extends PhoneEvent {
             if (code == HttpCode.CODE_M99) {
                 ThreadUtils.runOnUiThread(ToastUtils::dismiss);
                 XLogger.d("http: code=-99:网络错误" + msg);
-                for (BaseSipStatusChangedListener listener : sipStatusChangedListenerList) {
-                    listener.onSipResponseError(sipResponse);
+                if (ArrayUtils.isNotEmpty(sipStatusChangedListenerList)) {
+                    for (BaseSipStatusChangedListener listener : sipStatusChangedListenerList) {
+                        listener.onSipResponseError(sipResponse);
+                    }
                 }
             }
         } else if (StringUtils.equals(SipType.CALL_STATUS.getType(), type)) {
@@ -166,8 +172,10 @@ public class MySipPhoneEvent extends PhoneEvent {
                     }
                     SipPhoneManager.setFlag(false);
                     AppCacheContext.setSipState(code);
-                    for (BaseSipStatusChangedListener listener : sipStatusChangedListenerList) {
-                        listener.onSipResponseSuccess(sipResponse);
+                    if (ArrayUtils.isNotEmpty(sipStatusChangedListenerList)) {
+                        for (BaseSipStatusChangedListener listener : sipStatusChangedListenerList) {
+                            listener.onSipResponseSuccess(sipResponse);
+                        }
                     }
                     break;
                 default:
