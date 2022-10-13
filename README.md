@@ -34,9 +34,10 @@ SipPhoneManager.callPhoneBySip(phone);
 //OR 带扩展字段外呼
 SipPhoneManager.callPhoneBySip(phone,extendJson);
 ````
-- 2.注册SIP通话状态的listener
+- 2.注册SIP通话状态的listener（可选）
 ```java
-//继承 OnSipStatusChangedListener抽象类，并重写以下三个抽象方法 
+//继承 OnSipStatusChangedListener抽象类，并重写以下三个抽象方法（如果想获取更加详细的通话状态，可以继承 BaseSipStatusChangedListener）。
+并把该实现类注册到SDK中。
 public class OnSipStatusChangedListenerImpl extends OnSipStatusChangedListener{
     Override
     public  void onSipResponseError(SipResponse sipResponse){
@@ -52,8 +53,6 @@ public class OnSipStatusChangedListenerImpl extends OnSipStatusChangedListener{
     }
 }
 ```
-（可选）如果需要监听SIP电话的状态，需要继承 OnSipStatusChangedListener抽象类（如果想获取更加详细的通话状态，可以继承 BaseSipStatusChangedListener）。
-并把该实现类注册到SDK中。
 ```java
   //该方法在Application的onCreate中调用
  IpuSoftSDK.registerSipStatusChangedListener(new OnSipStatusChangedListenerImpl());
