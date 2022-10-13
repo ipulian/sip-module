@@ -52,7 +52,8 @@ public class OnSipStatusChangedListenerImpl extends OnSipStatusChangedListener{
     }
 }
 ```
-并把该接口的实现类 OnSipStatusChangedListenerImpl 注册到 SDK中
+（可选）如果需要监听SIP电话的状态，需要继承 OnSipStatusChangedListener抽象类（如果想获取更加详细的通话状态，可以继承 BaseSipStatusChangedListener）。
+并把该实现类注册到SDK中。
 ```java
   //该方法在Application的onCreate中调用
  IpuSoftSDK.registerSipStatusChangedListener(new OnSipStatusChangedListenerImpl());
