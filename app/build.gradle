@@ -61,8 +61,8 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 
-    // implementation project(":open_service_sip")
+    implementation project(":open_service_sip")
 
-    implementation 'com.github.ipulian:sip-module:1.1.16'
+    // implementation 'com.github.ipulian:sip-module:1.1.6'
     implementation 'com.github.ipulian:ipusdk:1.6.36'
 }

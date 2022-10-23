@@ -153,6 +153,9 @@ public class MySipPhoneEvent extends PhoneEvent {
                 case CallStatusCode.CODE_4:
                 case CallStatusCode.CODE_5:
                 case CallStatusCode.CODE_6:
+//                    if (StringUtils.isNotEmpty(msg)) {
+//                        ThreadUtils.runOnUiThread(() -> ToastUtils.showMessage(msg));
+//                    }
                     if (code == CallStatusCode.CODE_2) {
                         SipCallOutInfoBean sipCallOutInfoBean = new SipCallOutInfoBean();
                         if (StringUtils.isNotEmpty(msg)) {

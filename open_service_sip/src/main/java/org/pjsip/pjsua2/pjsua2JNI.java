@@ -79,6 +79,13 @@ public class pjsua2JNI {
   public final static native long PhoneConfig_pe_get(long jarg1, PhoneConfig jarg1_);
   public final static native long new_PhoneConfig();
   public final static native void delete_PhoneConfig(long jarg1);
+  public final static native void MyAccount_accIprm_set(long jarg1, MyAccount jarg1_, long jarg2);
+  public final static native long MyAccount_accIprm_get(long jarg1, MyAccount jarg1_);
+  public final static native void MyAccount_call_set(long jarg1, MyAccount jarg1_, long jarg2);
+  public final static native long MyAccount_call_get(long jarg1, MyAccount jarg1_);
+  public final static native long new_MyAccount();
+  public final static native void delete_MyAccount(long jarg1);
+  public final static native void MyAccount_onIncomingCall(long jarg1, MyAccount jarg1_, long jarg2);
   public final static native long new_Phone();
   public final static native void delete_Phone(long jarg1);
   public final static native void Phone_logFunc(long jarg1, Phone jarg1_, int jarg2, String jarg3, int jarg4);
@@ -97,6 +104,7 @@ public class pjsua2JNI {
   public final static native String Phone_getTime(long jarg1, Phone jarg1_);
   public final static native String Phone_getDate(long jarg1, Phone jarg1_);
   public final static native String Phone_getVersion(long jarg1, Phone jarg1_);
+  public final static native long Phone_getCall(long jarg1, Phone jarg1_);
 
   public static void SwigDirector_PhoneEvent_msg(PhoneEvent jself, String date, String type, int code, String msg) {
     jself.msg(date, type, code, msg);

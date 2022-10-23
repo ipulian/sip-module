@@ -33,7 +33,7 @@ public class FirstFragment extends Fragment {
         //  String extend = GsonUtils.toJson(new AuthInfo("123", "345", "789"));
         //  String encode = EncodeUtils.base64Encode2String(extend.getBytes());
         //15175182683 qr
-        binding.buttonFirst.setOnClickListener(view1 -> SipPhoneManager.callPhoneBySip("15175182683"));
+        binding.buttonFirst.setOnClickListener(view1 -> SipPhoneManager.callPhoneBySip("18317893005"));
     }
 
 

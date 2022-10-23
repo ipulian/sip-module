@@ -104,4 +104,9 @@ public class Phone {
     return pjsua2JNI.Phone_getVersion(swigCPtr, this);
   }
 
+  public SWIGTYPE_p_Call getCall() {
+    long cPtr = pjsua2JNI.Phone_getCall(swigCPtr, this);
+    return (cPtr == 0) ? null : new SWIGTYPE_p_Call(cPtr, false);
+  }
+
 }

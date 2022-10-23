@@ -29,9 +29,17 @@ public class MyApplication extends Application {
 //        IpuSoftSDK.updateAuthInfo(new AuthInfo("4822691987324969", "5e3b5ef6bd877e6f4e631e52c5b5af8b",
 //                "00002", "ccc51bd1b3ae442d9548b66d4bfd61e4"));
 
+//        4574421855764502
+//        c3d78e0a10011cb46d2a18353c415c3c
+//        10011
+//        fa9026ab6cbbca9dec329cab7473229685b3b5492f6a26d572469ff33a423147
+
         //开发环境
         IpuSoftSDK.init(this, Env.OPEN_DEV);
-        IpuSoftSDK.updateAuthInfo(new AuthInfo("4815437930168322", "4f244a0d86a99663e8aeb0849b3513c3", "00002", "53e891b5fa7c46fa9b60d0e440f57d9f"));
+        //天宸
+//        IpuSoftSDK.updateAuthInfo(new AuthInfo("4815437930168322", "4f244a0d86a99663e8aeb0849b3513c3", "00002", "53e891b5fa7c46fa9b60d0e440f57d9f"));
+
+        IpuSoftSDK.updateAuthInfo(new AuthInfo("4574421855764502", "c3d78e0a10011cb46d2a18353c415c3c", "10011", "fa9026ab6cbbca9dec329cab7473229685b3b5492f6a26d572469ff33a423147"));
 
 
 //        IpuSoftSDK.updateAuthInfo(new AuthInfo(

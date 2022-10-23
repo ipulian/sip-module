@@ -140,6 +140,7 @@ public class SipPhoneManager {
 
     public static void reCallPhoneBySip() {
         if (flag) {
+            flag = false;
             SeatInfo seatInfo = CommonDataRepo.getSeatInfo();
             if (seatInfo != null && StringUtils.isNotEmpty(seatInfo.getSeatNo())
                     && StringUtils.isNotEmpty(seatInfo.getSdkSecret())
