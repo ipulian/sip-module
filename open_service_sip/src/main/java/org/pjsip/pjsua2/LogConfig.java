@@ -9,92 +9,92 @@
 package org.pjsip.pjsua2;
 
 public class LogConfig {
-    private transient long swigCPtr;
-    protected transient boolean swigCMemOwn;
+  private transient long swigCPtr;
+  protected transient boolean swigCMemOwn;
 
-    protected LogConfig(long cPtr, boolean cMemoryOwn) {
-        swigCMemOwn = cMemoryOwn;
-        swigCPtr = cPtr;
+  protected LogConfig(long cPtr, boolean cMemoryOwn) {
+    swigCMemOwn = cMemoryOwn;
+    swigCPtr = cPtr;
+  }
+
+  protected static long getCPtr(LogConfig obj) {
+    return (obj == null) ? 0 : obj.swigCPtr;
+  }
+
+  @SuppressWarnings("deprecation")
+  protected void finalize() {
+    delete();
+  }
+
+  public synchronized void delete() {
+    if (swigCPtr != 0) {
+      if (swigCMemOwn) {
+        swigCMemOwn = false;
+        pjsua2JNI.delete_LogConfig(swigCPtr);
+      }
+      swigCPtr = 0;
     }
+  }
 
-    protected static long getCPtr(LogConfig obj) {
-        return (obj == null) ? 0 : obj.swigCPtr;
-    }
+  public void setMsgLogging(long value) {
+    pjsua2JNI.LogConfig_msgLogging_set(swigCPtr, this, value);
+  }
 
-    @SuppressWarnings("deprecation")
-    protected void finalize() {
-        delete();
-    }
+  public long getMsgLogging() {
+    return pjsua2JNI.LogConfig_msgLogging_get(swigCPtr, this);
+  }
 
-    public synchronized void delete() {
-        if (swigCPtr != 0) {
-            if (swigCMemOwn) {
-                swigCMemOwn = false;
-                pjsua2JNI.delete_LogConfig(swigCPtr);
-            }
-            swigCPtr = 0;
-        }
-    }
+  public void setLevel(long value) {
+    pjsua2JNI.LogConfig_level_set(swigCPtr, this, value);
+  }
 
-    public void setMsgLogging(long value) {
-        pjsua2JNI.LogConfig_msgLogging_set(swigCPtr, this, value);
-    }
+  public long getLevel() {
+    return pjsua2JNI.LogConfig_level_get(swigCPtr, this);
+  }
 
-    public long getMsgLogging() {
-        return pjsua2JNI.LogConfig_msgLogging_get(swigCPtr, this);
-    }
+  public void setConsoleLevel(long value) {
+    pjsua2JNI.LogConfig_consoleLevel_set(swigCPtr, this, value);
+  }
 
-    public void setLevel(long value) {
-        pjsua2JNI.LogConfig_level_set(swigCPtr, this, value);
-    }
+  public long getConsoleLevel() {
+    return pjsua2JNI.LogConfig_consoleLevel_get(swigCPtr, this);
+  }
 
-    public long getLevel() {
-        return pjsua2JNI.LogConfig_level_get(swigCPtr, this);
-    }
+  public void setDecor(long value) {
+    pjsua2JNI.LogConfig_decor_set(swigCPtr, this, value);
+  }
 
-    public void setConsoleLevel(long value) {
-        pjsua2JNI.LogConfig_consoleLevel_set(swigCPtr, this, value);
-    }
+  public long getDecor() {
+    return pjsua2JNI.LogConfig_decor_get(swigCPtr, this);
+  }
 
-    public long getConsoleLevel() {
-        return pjsua2JNI.LogConfig_consoleLevel_get(swigCPtr, this);
-    }
+  public void setFilename(String value) {
+    pjsua2JNI.LogConfig_filename_set(swigCPtr, this, value);
+  }
 
-    public void setDecor(long value) {
-        pjsua2JNI.LogConfig_decor_set(swigCPtr, this, value);
-    }
+  public String getFilename() {
+    return pjsua2JNI.LogConfig_filename_get(swigCPtr, this);
+  }
 
-//    public long getDecor() {
-//        return pjsua2JNI.LogCSonfig_decor_get(swigCPtr, this);
-//    }
+  public void setFileFlags(long value) {
+    pjsua2JNI.LogConfig_fileFlags_set(swigCPtr, this, value);
+  }
 
-    public void setFilename(String value) {
-        pjsua2JNI.LogConfig_filename_set(swigCPtr, this, value);
-    }
+  public long getFileFlags() {
+    return pjsua2JNI.LogConfig_fileFlags_get(swigCPtr, this);
+  }
 
-    public String getFilename() {
-        return pjsua2JNI.LogConfig_filename_get(swigCPtr, this);
-    }
+  public void setWriter(LogWriter value) {
+    pjsua2JNI.LogConfig_writer_set(swigCPtr, this, LogWriter.getCPtr(value), value);
+  }
 
-    public void setFileFlags(long value) {
-        pjsua2JNI.LogConfig_fileFlags_set(swigCPtr, this, value);
-    }
+  public LogWriter getWriter() {
+    long cPtr = pjsua2JNI.LogConfig_writer_get(swigCPtr, this);
+    return (cPtr == 0) ? null : new LogWriter(cPtr, false);
+  }
 
-    public long getFileFlags() {
-        return pjsua2JNI.LogConfig_fileFlags_get(swigCPtr, this);
-    }
-
-    public void setWriter(LogWriter value) {
-        pjsua2JNI.LogConfig_writer_set(swigCPtr, this, LogWriter.getCPtr(value), value);
-    }
-
-    public LogWriter getWriter() {
-        long cPtr = pjsua2JNI.LogConfig_writer_get(swigCPtr, this);
-        return (cPtr == 0) ? null : new LogWriter(cPtr, false);
-    }
-
-    public LogConfig() {
-        this(pjsua2JNI.new_LogConfig(), true);
-    }
+  public LogConfig() {
+    this(pjsua2JNI.new_LogConfig(), true);
+  }
 
 }
