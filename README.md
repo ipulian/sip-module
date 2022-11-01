@@ -69,6 +69,10 @@ public class OnSipStatusChangedListenerImpl extends OnSipStatusChangedListener{
 由于SIP SDK 使用的是UDP通信协议，所以在进行SIP通话的过程中，
 务必保持手机屏幕常亮（Android手机在锁屏状态下，无法接收UDP数据包），否则将导致通话中断，直到重新点亮手机屏幕。
 ```
+## Change Log
+#### v1.1.20
+* 优化语音质量
+* 新增支持接听回电
 ## ProGuard rules
 ```
 -keep class com.ipusoft.sip.bean.** { *;}
