@@ -4,6 +4,7 @@
 
 **首先可以通过 ``` git clone https://github.com/ipulian/sip-module.git ``` 把该项目在Android Studio中直接运行。** 
 ## Setup
+### gradle
 ```gradle
 allprojects {
     repositories {
@@ -12,9 +13,24 @@ allprojects {
 }
 
 dependencies {
-                     //使用时把 latest-version 替换成最新release版本
-    implementation 'com.github.ipulian:sip-module:latest-version'
+    //使用时把 latest-version 替换成最新release版本
+    implementation 'com.github.ipulian:ipusdk:latest-version'
 }
+```
+### maven
+```maven
+<repositories>
+    <repository>
+	<id>jitpack.io</id>
+	<url>https://jitpack.io</url>
+    </repository>
+</repositories>
+
+<dependency>
+	<groupId>com.github.ipulian</groupId>
+	<artifactId>ipusdk</artifactId>
+	<version>latest-version</version>
+</dependency>
 ```
 在AndroidManifest.xml中注册需要的权限
 ```xml
