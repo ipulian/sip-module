@@ -4,6 +4,7 @@
 
 **首先可以通过 ``` git clone https://github.com/ipulian/sip-module.git ``` 把该项目在Android Studio中直接运行。** 
 ## Setup
+### gradle
 ```gradle
 allprojects {
     repositories {
@@ -12,9 +13,24 @@ allprojects {
 }
 
 dependencies {
-                     //使用时把 latest-version 替换成最新release版本
-    implementation 'com.github.ipulian:sip-module:latest-version'
+    //使用时把 latest-version 替换成最新release版本
+    implementation 'com.github.ipulian:ipusdk:latest-version'
 }
+```
+### maven
+```maven
+<repositories>
+    <repository>
+	<id>jitpack.io</id>
+	<url>https://jitpack.io</url>
+    </repository>
+</repositories>
+
+<dependency>
+	<groupId>com.github.ipulian</groupId>
+	<artifactId>ipusdk</artifactId>
+	<version>latest-version</version>
+</dependency>
 ```
 在AndroidManifest.xml中注册需要的权限
 ```xml
@@ -69,6 +85,10 @@ public class OnSipStatusChangedListenerImpl extends OnSipStatusChangedListener{
 由于SIP SDK 使用的是UDP通信协议，所以在进行SIP通话的过程中，
 务必保持手机屏幕常亮（Android手机在锁屏状态下，无法接收UDP数据包），否则将导致通话中断，直到重新点亮手机屏幕。
 ```
+## Change Log
+#### v1.1.20
+* 优化语音质量
+* 新增支持接听回电
 ## ProGuard rules
 ```
 -keep class com.ipusoft.sip.bean.** { *;}
