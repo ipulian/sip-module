@@ -11,6 +11,8 @@ package org.pjsip.pjsua2;
 public class pjsua2JNI {
   public final static native void delete_PhoneEvent(long jarg1);
   public final static native void PhoneEvent_msg(long jarg1, PhoneEvent jarg1_, String jarg2, String jarg3, int jarg4, String jarg5);
+  public final static native void PhoneEvent_callCode_set(long jarg1, PhoneEvent jarg1_, String jarg2);
+  public final static native String PhoneEvent_callCode_get(long jarg1, PhoneEvent jarg1_);
   public final static native long new_PhoneEvent();
   public final static native void PhoneEvent_director_connect(PhoneEvent obj, long cptr, boolean mem_own, boolean weak_global);
   public final static native void PhoneEvent_change_ownership(PhoneEvent obj, long cptr, boolean take_or_release);
@@ -105,6 +107,7 @@ public class pjsua2JNI {
   public final static native String Phone_getDate(long jarg1, Phone jarg1_);
   public final static native String Phone_getVersion(long jarg1, Phone jarg1_);
   public final static native long Phone_getCall(long jarg1, Phone jarg1_);
+  public final static native void Phone_libRegisterThread(long jarg1, Phone jarg1_, String jarg2);
 
   public static void SwigDirector_PhoneEvent_msg(PhoneEvent jself, String date, String type, int code, String msg) {
     jself.msg(date, type, code, msg);

@@ -27,7 +27,7 @@ public abstract class OnSipStatusChangedListener implements BaseSipStatusChanged
 
     public abstract void onStartCall();
 
-    public abstract void onEndCall();
+    public abstract void onEndCall(SipResponse sipResponse);
 
     @Override
     public void onSipResponseSuccess(SipResponse sipResponse) {
@@ -56,9 +56,11 @@ public abstract class OnSipStatusChangedListener implements BaseSipStatusChanged
                 break;
             case CallStatusCode.CODE_6:
                 status = SipState.STATUS_6;
-                onEndCall();
+                onEndCall(sipResponse);
                 break;
-            default:
+            default://其他状态（号码拦截，黑名单等），直接挂断
+                status = SipState.STATUS_6;
+                onEndCall(sipResponse);
                 break;
         }
         LiveDataBus.get().with(LiveDataConstant.UPDATE_SIP_CALL_STATUS, SipState.class).postValue(status);

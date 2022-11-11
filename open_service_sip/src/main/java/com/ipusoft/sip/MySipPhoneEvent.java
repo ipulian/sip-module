@@ -72,7 +72,10 @@ public class MySipPhoneEvent extends PhoneEvent {
                     }
                 }
             } else {
-                SipManager.getInstance().login();
+                new Thread(() -> {
+                    SipManager.getInstance().libRegisterThread(Thread.currentThread().getName());
+                    SipManager.getInstance().login();
+                }).start();
             }
         } else if (StringUtils.equals(SipType.LOGIN.getType(), type)) {
             switch (code) {
@@ -83,7 +86,10 @@ public class MySipPhoneEvent extends PhoneEvent {
                     break;
                 case LoginCode.CODE_0:
                     XLogger.d("login: 签入失败，重新签入");
-                    SipManager.getInstance().login();
+                    new Thread(() -> {
+                        SipManager.getInstance().libRegisterThread(Thread.currentThread().getName());
+                        SipManager.getInstance().login();
+                    }).start();
                     SipCoreService.setSipStatus(0);
                     break;
                 case LoginCode.CODE_M1:
@@ -129,7 +135,10 @@ public class MySipPhoneEvent extends PhoneEvent {
 
                     Log.d(TAG, "preHandleStatus: ---------");
                     XLogger.d("分机状态错误，需尝试登陆(login即可)，再呼叫");
-                    SipManager.getInstance().login();
+                    new Thread(() -> {
+                        SipManager.getInstance().libRegisterThread(Thread.currentThread().getName());
+                        SipManager.getInstance().login();
+                    }).start();
                     break;
                 case CallStatusCode.CODE_M99:
                     XLogger.d("Json解析错误（系统内部错误）");
@@ -182,6 +191,13 @@ public class MySipPhoneEvent extends PhoneEvent {
                     }
                     break;
                 default:
+                    SipPhoneManager.setFlag(false);
+                    AppCacheContext.setSipState(code);
+                    if (ArrayUtils.isNotEmpty(sipStatusChangedListenerList)) {
+                        for (BaseSipStatusChangedListener listener : sipStatusChangedListenerList) {
+                            listener.onSipResponseSuccess(sipResponse);
+                        }
+                    }
                     break;
             }
         }

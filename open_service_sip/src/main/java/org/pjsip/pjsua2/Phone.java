@@ -109,4 +109,8 @@ public class Phone {
     return (cPtr == 0) ? null : new SWIGTYPE_p_Call(cPtr, false);
   }
 
+  public void libRegisterThread(String name) {
+    pjsua2JNI.Phone_libRegisterThread(swigCPtr, this, name);
+  }
+
 }

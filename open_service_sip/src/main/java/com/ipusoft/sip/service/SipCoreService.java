@@ -22,7 +22,6 @@ import com.ipusoft.utils.ExceptionUtils;
 import com.ipusoft.utils.GsonUtils;
 import com.ipusoft.utils.MD5Utils;
 import com.ipusoft.utils.StringUtils;
-import com.ipusoft.utils.ThreadUtils;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
@@ -138,18 +137,29 @@ public class SipCoreService extends BaseLifeCycleService {
         @Override
         public void run() {
 
-//            SipManager.getInstance().ini();
-            //  SipManager.getInstance().login();
-
-            ThreadUtils.runOnUiThreadDelayed(() -> {
-                SipManager.getInstance().login();
-                SipManager.getInstance().resetLoginCnt();
-            }, 6000);
-
             if (CommonDataRepo.getSipSDKSignOut()) {
                 XLogger.d("----->SIP SDK 已退出登录");
                 return;
             }
+
+            new Thread(() -> {
+                try {
+                    Thread.sleep(6000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                //子线程调用login()方法之前，需要先调用libRegisterThread();
+                Log.d(TAG, "js/call/ping: ---------------->" + Thread.currentThread().getName());
+                SipManager.getInstance().libRegisterThread(Thread.currentThread().getName());
+                SipManager.getInstance().login();
+                SipManager.getInstance().resetLoginCnt();
+            }).start();
+
+            //主线程调用login()方法，一定几率会造成线程阻塞。
+//            ThreadUtils.runOnUiThreadDelayed(() -> {
+//                SipManager.getInstance().login();
+//                SipManager.getInstance().resetLoginCnt();
+//            }, 6 * 1000);
 
             String localCallType = CommonDataRepo.getLocalCallType();
             XLogger.d("run: ------------>localCallType---->" + localCallType);

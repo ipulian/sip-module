@@ -178,4 +178,10 @@ public class SipManager {
             phone.answerCall();
         }
     }
+
+    public void libRegisterThread(String name) {
+        if (phone != null) {
+            phone.libRegisterThread(name);
+        }
+    }
 }

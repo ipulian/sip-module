@@ -55,6 +55,14 @@ public class PhoneEvent {
     pjsua2JNI.PhoneEvent_msg(swigCPtr, this, date, type, code, msg);
   }
 
+  public void setCallCode(String value) {
+    pjsua2JNI.PhoneEvent_callCode_set(swigCPtr, this, value);
+  }
+
+  public String getCallCode() {
+    return pjsua2JNI.PhoneEvent_callCode_get(swigCPtr, this);
+  }
+
   public PhoneEvent() {
     this(pjsua2JNI.new_PhoneEvent(), true);
     pjsua2JNI.PhoneEvent_director_connect(this, swigCPtr, true, true);

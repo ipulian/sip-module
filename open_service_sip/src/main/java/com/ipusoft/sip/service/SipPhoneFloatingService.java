@@ -79,7 +79,9 @@ public class SipPhoneFloatingService extends BaseLifeCycleService implements OnS
         sipMiniFloatingView.setOnClickListener(v -> {
             sipAdapter.updateData(sipCallOutBean);
             mFloatingView.show(sipCallOutBean.getSipPhoneType());
-            sipMiniFloatingView.dismiss();
+            if (sipMiniFloatingView != null) {
+                sipMiniFloatingView.dismiss();
+            }
         });
     }
 
@@ -202,10 +204,14 @@ public class SipPhoneFloatingService extends BaseLifeCycleService implements OnS
     protected void onIDestroy() {
         SipCacheApp.setSIPCallOutBean(null);
         SipCacheApp.setSipCallInNumberInfo("", "", null);
-        if (mFloatingView != null) {
-            mFloatingView.dismiss();
-            sipMiniFloatingView.dismiss();
-            mFloatingView = null;
+        try {
+            if (mFloatingView != null) {
+                mFloatingView.dismiss();
+                sipMiniFloatingView.dismiss();
+                mFloatingView = null;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -214,9 +220,13 @@ public class SipPhoneFloatingService extends BaseLifeCycleService implements OnS
         //SipCacheApp.setSipCallOutInfoBean();
         SipCacheApp.setSIPCallOutBean(null);
         SipCacheApp.setSipCallInNumberInfo("", "", null);
-        if (mFloatingView != null) {
-            mFloatingView.dismiss();
-            sipMiniFloatingView.dismiss();
+        try {
+            if (mFloatingView != null) {
+                mFloatingView.dismiss();
+                sipMiniFloatingView.dismiss();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
