@@ -1,5 +1,8 @@
 package com.ipusoft.sip;
 
+import com.elvishew.xlog.XLog;
+import com.ipusoft.utils.StringUtils;
+
 import org.pjsip.pjsua2.LogEntry;
 import org.pjsip.pjsua2.LogWriter;
 
@@ -11,8 +14,17 @@ import org.pjsip.pjsua2.LogWriter;
 
 
 public class MyLogWriter extends LogWriter {
+    private static final String TAG = "MyLogWriter";
+
     @Override
     public void write(LogEntry entry) {
-        System.out.println(entry.getMsg());
+        System.out.println("MyLogWriter--------" + entry.getMsg());
+        try {
+            if (entry != null && StringUtils.isNotEmpty(entry.getMsg())) {
+                XLog.d(TAG, entry.getMsg());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

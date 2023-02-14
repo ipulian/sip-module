@@ -3,9 +3,11 @@ package com.ipusoft.sip.manager;
 import android.content.Context;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.util.Log;
 
 import androidx.annotation.RawRes;
 
+import com.ipusoft.logger.XLogger;
 import com.ipusoft.sip.R;
 
 import java.io.IOException;
@@ -56,6 +58,7 @@ public class MediaPlayerManager {
             mediaPlayer.setLooping(isLooping);
             mediaPlayer.prepare();
             mediaPlayer.start();
+            XLogger.d(TAG, "开始播放提示音：--->" + resId);
             if (listener != null) {
                 mediaPlayer.setOnCompletionListener(listener::onCompletion);
             }
@@ -83,6 +86,15 @@ public class MediaPlayerManager {
         });
     }
 
+    public static void playNoUserAnsweredRing(Context context, OnVoiceCompletionListener listener) {
+        playSystemVoice(context, R.raw.no_user_answered, false, mp -> {
+            stopAndReleasePlay();
+            if (listener != null) {
+                listener.onCompletion(mp);
+            }
+        });
+    }
+
     /**
      * 根据按键类型播放提示音
      *
@@ -99,7 +111,9 @@ public class MediaPlayerManager {
      */
     public static synchronized void stopAndReleasePlay() {
         try {
+            Log.d(TAG, "stopAndReleasePlay: ---------------1");
             if (mediaPlayer != null) {
+                Log.d(TAG, "stopAndReleasePlay: ---------------2");
                 mediaPlayer.stop();
                 mediaPlayer.release();
                 mediaPlayer = null;

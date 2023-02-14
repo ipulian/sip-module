@@ -60,7 +60,7 @@ public class SipManager {
         }
         if (logConfig == null) {
             logConfig = new LogConfig();
-            int LOG_LEVEL = 4;
+            int LOG_LEVEL = 5;
             logConfig.setLevel(LOG_LEVEL);
             logConfig.setConsoleLevel(LOG_LEVEL);
             logConfig.setWriter(logWriter);

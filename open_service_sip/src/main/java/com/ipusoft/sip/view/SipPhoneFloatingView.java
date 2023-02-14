@@ -5,7 +5,6 @@ import android.graphics.PixelFormat;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -51,6 +50,7 @@ public class SipPhoneFloatingView extends LinearLayout implements View.OnClickLi
     private LinearLayout llDialPanRoot, llInfo;
     private TextView tvInput;
     private ImageView ivArrow, ivAudioMode;
+    private TextView tvNetWork;
     private boolean flag = true;
 
 
@@ -135,6 +135,7 @@ public class SipPhoneFloatingView extends LinearLayout implements View.OnClickLi
 
         ivArrow = view.findViewById(R.id.iv_arrow);
         ivAudioMode = view.findViewById(R.id.iv_audio_mode);
+        tvNetWork = view.findViewById(R.id.tv_network);
         ivAudioMode.setOnClickListener(this);
         /*
          * 设置耳机播放还是听筒播放
@@ -272,6 +273,23 @@ public class SipPhoneFloatingView extends LinearLayout implements View.OnClickLi
 
     public void setAdapter(SipPhoneFloatingViewAdapter mAdapter) {
         mAdapter.updateView(this);
+    }
+
+    public boolean getShowStatus() {
+        return mIsShow;
+    }
+
+    public void setNetWorkStatus(String netWorkStatus) {
+        if (tvNetWork != null) {
+            tvNetWork.setText(netWorkStatus);
+        }
+    }
+
+    public String getNetWorkStatus() {
+        if (tvNetWork != null) {
+            return tvNetWork.getText().toString();
+        }
+        return "";
     }
 
     @Override

@@ -6,6 +6,7 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
+import com.elvishew.xlog.XLog;
 import com.ipusoft.context.AppContext;
 import com.ipusoft.context.BaseLifeCycleService;
 import com.ipusoft.context.LiveDataBus;
@@ -162,12 +163,12 @@ public class SipCoreService extends BaseLifeCycleService {
 //            }, 6 * 1000);
 
             String localCallType = CommonDataRepo.getLocalCallType();
-            XLogger.d("run: ------------>localCallType---->" + localCallType);
-            Log.d(TAG, "sipPing: .------------->" + localCallType);
+            XLog.d("run: ------------>localCallType---->" + localCallType);
+            //Log.d(TAG, "sipPing: .------------->" + localCallType);
             if (StringUtils.equals(CallTypeConfig.SIP.getType(), localCallType)) {
                 SeatInfo seatInfo = CommonDataRepo.getSeatInfo();
                 Log.d(TAG, "sipPing: .------------->" + GsonUtils.toJson(seatInfo));
-                XLogger.d("run: ------------>SipCoreService---->sipPing" + GsonUtils.toJson(seatInfo));
+                XLog.d("run: ------------>SipCoreService---->sipPing" + GsonUtils.toJson(seatInfo));
                 if (seatInfo != null && StringUtils.isNotEmpty(seatInfo.getSeatNo())
                         && StringUtils.isNotEmpty(seatInfo.getSdkSecret())
                         && StringUtils.isNotEmpty(seatInfo.getApiKey())

@@ -32,30 +32,35 @@ public abstract class OnSipStatusChangedListener implements BaseSipStatusChanged
     @Override
     public void onSipResponseSuccess(SipResponse sipResponse) {
         SipState status = SipState.STATUS_0;
+        Log.d(TAG, "onSipResponseSuccess: --------------->" + sipResponse.getCode());
         switch (sipResponse.getCode()) {
             case CallStatusCode.CODE_1:
                 ThreadUtils.runOnUiThread(ToastUtils::dismiss);
                 Log.d(TAG, "onSipResponseSuccess: ----------<");
-                SipFloatingViewIntentManager.startSipCallOutFloatingService();
                 SipManager.getInstance().resetLoginCnt();
                 status = SipState.STATUS_1;
+                SipFloatingViewIntentManager.startSipCallOutFloatingService();
                 onStartCall();
                 break;
             case CallStatusCode.CODE_2:
                 status = SipState.STATUS_2;
-                SipFloatingViewIntentManager.startSipCallOutFloatingService();
+                //  SipFloatingViewIntentManager.startSipCallOutFloatingService();
                 break;
             case CallStatusCode.CODE_3:
                 status = SipState.STATUS_3;
+                SipFloatingViewIntentManager.startSipCallOutFloatingService();
                 break;
             case CallStatusCode.CODE_4:
                 status = SipState.STATUS_4;
+                //  SipFloatingViewIntentManager.startSipCallOutFloatingService();
                 break;
             case CallStatusCode.CODE_5:
                 status = SipState.STATUS_5;
+                //  SipFloatingViewIntentManager.startSipCallOutFloatingService();
                 break;
             case CallStatusCode.CODE_6:
                 status = SipState.STATUS_6;
+                // SipFloatingViewIntentManager.startSipCallOutFloatingService();
                 onEndCall(sipResponse);
                 break;
             default://其他状态（号码拦截，黑名单等），直接挂断

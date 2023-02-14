@@ -2,6 +2,8 @@ package com.ipusoft.sip.service;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.os.Handler;
+import android.os.Message;
 import android.os.PowerManager;
 import android.util.Log;
 import android.view.WindowManager;
@@ -12,7 +14,9 @@ import com.ipusoft.context.LiveDataBus;
 import com.ipusoft.context.bean.Customer;
 import com.ipusoft.context.component.ToastUtils;
 import com.ipusoft.context.constant.LiveDataConstant;
+import com.ipusoft.context.constant.NetWorkType;
 import com.ipusoft.context.constant.SipState;
+import com.ipusoft.logger.XLogger;
 import com.ipusoft.sip.ITimerTask;
 import com.ipusoft.sip.SipCacheApp;
 import com.ipusoft.sip.adapter.SipPhoneFloatingViewAdapter;
@@ -25,9 +29,11 @@ import com.ipusoft.sip.manager.SipPhoneManager;
 import com.ipusoft.sip.view.SipMiniFloatingView;
 import com.ipusoft.sip.view.SipPhoneFloatingView;
 import com.ipusoft.utils.GsonUtils;
+import com.ipusoft.utils.NetWorkListenerUtils;
 import com.ipusoft.utils.StringUtils;
 import com.ipusoft.utils.ThreadUtils;
 
+import java.math.BigDecimal;
 import java.util.TimerTask;
 
 /**
@@ -47,18 +53,56 @@ public class SipPhoneFloatingService extends BaseLifeCycleService implements OnS
     private SipPhoneFloatingViewAdapter sipAdapter;
 
     private int i = 0;
-    private ITimerTask task;
+    private ITimerTask task, task1;
 
     private SipCallOutInfoBean sipCallOutBean;
 
+    private int noUserAnsweredType = 0;
+
+    private static final String NO_NET_WORK = "网络连接异常";
+
+    private Handler mHandler = new Handler() {
+        private int count = 0;
+
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case 100:
+                    if (mFloatingView != null) {
+                        if (StringUtils.equals(NO_NET_WORK, mFloatingView.getNetWorkStatus())) {
+                            String temp = msg.obj.toString().substring(0, msg.obj.toString().length() - 2);
+                            if (new BigDecimal(temp).compareTo(BigDecimal.ZERO) != 0) {
+                                ++count;
+                            }
+                            if (count > 5) {
+                                mFloatingView.setNetWorkStatus(msg.obj.toString() + "/s");
+                                count = 0;
+                            }
+                        } else {
+                            mFloatingView.setNetWorkStatus(msg.obj.toString() + "/s");
+                        }
+                    }
+                    break;
+            }
+            super.handleMessage(msg);
+        }
+    };
+
     @Override
     protected void onICreate() {
+        if (mFloatingView != null && mFloatingView.getShowStatus()) {
+            XLogger.d(TAG, "外呼弹屏已经展示");
+            return;
+        }
+
         mFloatingView = new SipPhoneFloatingView(this);
         mFloatingView.setOnClickListener(this);
         sipAdapter = new SipPhoneFloatingViewAdapter();
         mFloatingView.setAdapter(sipAdapter);
 
         sipMiniFloatingView = new SipMiniFloatingView(this);
+
+        new NetWorkListenerUtils(this, mHandler).startShowNetSpeed();
 
         try {
             if (AppContext.getActivityContext() != null) {
@@ -87,8 +131,23 @@ public class SipPhoneFloatingService extends BaseLifeCycleService implements OnS
 
     @Override
     protected void bindLiveData() {
+
+        LiveDataBus.get().with(LiveDataConstant.NETWORK_CHANGED, NetWorkType.class)
+                .observe(this, netWorkType -> {
+                    Log.d(TAG, "bindLiveData: ------------->" + netWorkType);
+                    if (mFloatingView != null) {
+                        if (NetWorkType.NETWORK_NO == netWorkType) {
+                            mFloatingView.setNetWorkStatus(NO_NET_WORK);
+                        }
+                    }
+                });
+
         LiveDataBus.get().with(LiveDataConstant.WINDOW_SHOW_SIP_CALL, SipCallOutInfoBean.class)
                 .observe(this, sipBean -> {
+                    if (mFloatingView != null && mFloatingView.getShowStatus()) {
+                        XLogger.d(TAG, "外呼弹屏已经展示");
+                        return;
+                    }
                     //Log.d(TAG, "onIStartCommand: ----------->2");
                     this.sipCallOutBean = sipBean;
                     sipAdapter.updateData(sipBean);
@@ -138,12 +197,47 @@ public class SipPhoneFloatingService extends BaseLifeCycleService implements OnS
                 .observe(this, sipCallStatus -> {
                     Log.d(TAG, "bindLiveData: ----------:" + sipCallStatus);
                     ToastUtils.dismiss();
+//                    try {
+//                        WifiManager manager = (WifiManager) this.getSystemService(Context.WIFI_SERVICE);
+//                        WifiManager.MulticastLock lock = manager.createMulticastLock("test wifi");
+//                        if (sipCallStatus.getStatus() == CallStatusCode.CODE_2
+//                                || sipCallStatus.getStatus() == CallStatusCode.CODE_3) {
+//                            lock.release();
+//                            lock.acquire();
+//                        } else if (sipCallStatus.getStatus() == CallStatusCode.CODE_6) {
+//                            lock.release();
+//                        }
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
+
                     if (CallStatusCode.CODE_1 == sipCallStatus.getStatus()) {
                         MediaPlayerManager.playCallOutRing(AppContext.getAppContext());
                     } else if (CallStatusCode.CODE_2 == sipCallStatus.getStatus()) {
                         MediaPlayerManager.playCallOutRing(AppContext.getAppContext());
+
+                        noUserAnsweredType = 0;
+
                     } else if (CallStatusCode.CODE_3 == sipCallStatus.getStatus()) {
                         MediaPlayerManager.stopAndReleasePlay();
+
+                        try {
+                            if (task1 != null) {
+                                task1.stop();
+                                task1 = null;
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        task1 = new ITimerTask(1000, 1000, new TimerTask() {
+                            @Override
+                            public void run() {
+                                ++noUserAnsweredType;
+                                Log.d(TAG, "bindLiveData: ----------:" + noUserAnsweredType);
+                            }
+                        });
+                        task1.start();
+
                     } else if (CallStatusCode.CODE_4 == sipCallStatus.getStatus()) {
                         /*
                          * 部分线路，没有CallStatusCode.CODE_3
@@ -151,6 +245,16 @@ public class SipPhoneFloatingService extends BaseLifeCycleService implements OnS
                         MediaPlayerManager.stopAndReleasePlay();
                     } else if (CallStatusCode.CODE_5 == sipCallStatus.getStatus()) {
                         try {
+
+                            noUserAnsweredType = 0;
+                            if (task1 != null) {
+                                try {
+                                    task1.stop();
+                                    task1 = null;
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
 
                             MediaPlayerManager.stopAndReleasePlay();
 
@@ -170,11 +274,32 @@ public class SipPhoneFloatingService extends BaseLifeCycleService implements OnS
                             if (task != null) {
                                 task.stop();
                             }
-                            MediaPlayerManager.playHungUpRing(AppContext.getAppContext(),
-                                    mp -> {
-                                        mFloatingView.dismiss();
-                                        sipMiniFloatingView.dismiss();
-                                    });
+                            Log.d(TAG, "bindLiveData: ---------->>>>>:" + noUserAnsweredType);
+                            if (noUserAnsweredType > 50) {
+                                ThreadUtils.runOnUiThreadDelayed(() -> {
+                                    MediaPlayerManager.playNoUserAnsweredRing(AppContext.getAppContext(),
+                                            mp -> {
+                                                if (task1 != null) {
+                                                    task1.stop();
+                                                    task1 = null;
+                                                }
+                                                mFloatingView.dismiss();
+                                                sipMiniFloatingView.dismiss();
+                                            });
+                                }, 800);
+                            } else {
+                                MediaPlayerManager.playHungUpRing(AppContext.getAppContext(),
+                                        mp -> {
+                                            if (task1 != null) {
+                                                task1.stop();
+                                                task1 = null;
+                                            }
+                                            mFloatingView.dismiss();
+                                            sipMiniFloatingView.dismiss();
+                                        });
+                            }
+
+                            noUserAnsweredType = 0;
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -190,6 +315,10 @@ public class SipPhoneFloatingService extends BaseLifeCycleService implements OnS
     protected void onIStartCommand(Intent intent, int flags, int startId) {
         if (intent != null) {
             String json = intent.getStringExtra(LiveDataConstant.WINDOW_SHOW_SIP_CALL);
+            if (mFloatingView != null && mFloatingView.getShowStatus()) {
+                XLogger.d(TAG, "外呼弹屏已经展示");
+                return;
+            }
             if (StringUtils.isNotEmpty(json)) {
                 SipCallOutInfoBean sipCallOutInfoBean = GsonUtils.fromJson(json, SipCallOutInfoBean.class);
                 Log.d(TAG, "onIStartCommand: ----------->1");
