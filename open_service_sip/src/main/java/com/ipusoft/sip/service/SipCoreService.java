@@ -14,7 +14,6 @@ import com.ipusoft.context.bean.SeatInfo;
 import com.ipusoft.context.bean.base.HttpResponse;
 import com.ipusoft.context.constant.CallTypeConfig;
 import com.ipusoft.context.constant.LiveDataConstant;
-import com.ipusoft.logger.XLogger;
 import com.ipusoft.mmkv.datastore.CommonDataRepo;
 import com.ipusoft.sip.manager.SipManager;
 import com.ipusoft.sip.module.SipService;
@@ -62,7 +61,7 @@ public class SipCoreService extends BaseLifeCycleService {
 
     @Override
     protected void onICreate() {
-        XLogger.d("run: ------------>SipCoreService---->onICreate");
+        XLog.d("run: ------------>SipCoreService---->onICreate");
     }
 
     @Override
@@ -139,7 +138,7 @@ public class SipCoreService extends BaseLifeCycleService {
         public void run() {
 
             if (CommonDataRepo.getSipSDKSignOut()) {
-                XLogger.d("----->SIP SDK 已退出登录");
+                XLog.d("----->SIP SDK 已退出登录");
                 return;
             }
 
@@ -167,7 +166,7 @@ public class SipCoreService extends BaseLifeCycleService {
             //Log.d(TAG, "sipPing: .------------->" + localCallType);
             if (StringUtils.equals(CallTypeConfig.SIP.getType(), localCallType)) {
                 SeatInfo seatInfo = CommonDataRepo.getSeatInfo();
-                Log.d(TAG, "sipPing: .------------->" + GsonUtils.toJson(seatInfo));
+                //  Log.d(TAG, "sipPing: .------------->" + GsonUtils.toJson(seatInfo));
                 XLog.d("run: ------------>SipCoreService---->sipPing" + GsonUtils.toJson(seatInfo));
                 if (seatInfo != null && StringUtils.isNotEmpty(seatInfo.getSeatNo())
                         && StringUtils.isNotEmpty(seatInfo.getSdkSecret())
@@ -201,7 +200,7 @@ public class SipCoreService extends BaseLifeCycleService {
                         }
                     });
                 } else {
-                    XLogger.d("sipPing失败,无坐席信息,seatInfo：" + GsonUtils.toJson(seatInfo));
+                    XLog.d("sipPing失败,无坐席信息,seatInfo：" + GsonUtils.toJson(seatInfo));
                 }
             }
         }

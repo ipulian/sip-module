@@ -1,10 +1,10 @@
 package com.ipusoft.sip.manager;
 
+import com.elvishew.xlog.XLog;
 import com.ipusoft.context.bean.SeatInfo;
 import com.ipusoft.context.cache.AppCacheContext;
 import com.ipusoft.context.component.ToastUtils;
 import com.ipusoft.context.constant.HttpStatus;
-import com.ipusoft.logger.XLogger;
 import com.ipusoft.mmkv.datastore.CommonDataRepo;
 import com.ipusoft.sip.SipCacheApp;
 import com.ipusoft.sip.bean.SipCallOutInfoBean;
@@ -48,17 +48,17 @@ public class SipPhoneManager {
                 && StringUtils.isNotEmpty(seatInfo.getPassword())) {
             String status = seatInfo.getHttpStatus();
             if (StringUtils.equals(HttpStatus.SUCCESS, status)) {
-                XLogger.d("callPhoneBySip：" + cPhone);
+                XLog.d("callPhoneBySip：" + cPhone);
                 if (StringUtils.isNotEmpty(cPhone)) {
                     String str = SipManager.getInstance().makeCall(cPhone);
                     setCallId(str);
                 }
             } else {
-                XLogger.d(seatInfo.getMsg());
+                XLog.d(seatInfo.getMsg());
                 ToastUtils.showMessage(seatInfo.getMsg());
             }
         } else {
-            XLogger.d("查询坐席信息失败1");
+            XLog.d("查询坐席信息失败1");
             ToastUtils.showMessage("查询坐席信息失败");
         }
     }
@@ -79,17 +79,17 @@ public class SipPhoneManager {
                 && StringUtils.isNotEmpty(seatInfo.getPassword())) {
             String status = seatInfo.getHttpStatus();
             if (StringUtils.equals(HttpStatus.SUCCESS, status)) {
-                XLogger.d("callPhoneBySip：" + cPhone);
+                XLog.d("callPhoneBySip：" + cPhone);
                 if (StringUtils.isNotEmpty(cPhone)) {
                     String str = SipManager.getInstance().makeCall(cPhone);
                     setCallId(str);
                 }
             } else {
-                XLogger.d(seatInfo.getMsg());
+                XLog.d(seatInfo.getMsg());
                 ToastUtils.showMessage(seatInfo.getMsg());
             }
         } else {
-            XLogger.d("查询坐席信息失败1");
+            XLog.d("查询坐席信息失败1");
             ToastUtils.showMessage("查询坐席信息失败");
         }
     }
@@ -111,17 +111,17 @@ public class SipPhoneManager {
                 && StringUtils.isNotEmpty(seatInfo.getPassword())) {
             String status = seatInfo.getHttpStatus();
             if (StringUtils.equals(HttpStatus.SUCCESS, status)) {
-                XLogger.d("callPhoneBySip：" + cPhone);
+                XLog.d("callPhoneBySip：" + cPhone);
                 if (StringUtils.isNotEmpty(cPhone)) {
                     String str = SipManager.getInstance().makeCall(cPhone, extend);
                     setCallId(str);
                 }
             } else {
-                XLogger.d(seatInfo.getMsg());
+                XLog.d(seatInfo.getMsg());
                 ToastUtils.showMessage(seatInfo.getMsg());
             }
         } else {
-            XLogger.d("查询坐席信息失败1");
+            XLog.d("查询坐席信息失败1");
             ToastUtils.showMessage("查询坐席信息失败");
         }
     }
@@ -149,7 +149,7 @@ public class SipPhoneManager {
                 String status = seatInfo.getHttpStatus();
                 if (StringUtils.equals(HttpStatus.SUCCESS, status)) {
                     String cPhone = SipCacheApp.getSIPCallOutNumber();
-                    XLogger.d("reCallPhoneBySip：" + cPhone);
+                    XLog.d("reCallPhoneBySip：" + cPhone);
                     if (StringUtils.isNotEmpty(cPhone)) {
                         String str = "";
                         if (StringUtils.isNotEmpty(extend)) {
@@ -161,11 +161,11 @@ public class SipPhoneManager {
                         setCallId(str);
                     }
                 } else {
-                    XLogger.d(seatInfo.getMsg());
+                    XLog.d(seatInfo.getMsg());
                     ToastUtils.showMessage(seatInfo.getMsg());
                 }
             } else {
-                XLogger.d("查询坐席信息失败");
+                XLog.d("查询坐席信息失败");
                 ToastUtils.showMessage("查询坐席信息失败");
             }
         }
@@ -204,7 +204,7 @@ public class SipPhoneManager {
                 && StringUtils.isNotEmpty(seatInfo.getApiKey())) {
             SipManager.getInstance().registerSip(seatInfo);
         } else {
-            XLogger.d("注册线路失败,无坐席信息,seatInfo：" + GsonUtils.toJson(seatInfo));
+            XLog.d("注册线路失败,无坐席信息,seatInfo：" + GsonUtils.toJson(seatInfo));
             ToastUtils.showMessage("注册线路失败,无坐席信息");
         }
     }

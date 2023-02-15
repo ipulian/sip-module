@@ -18,10 +18,9 @@ public class MyLogWriter extends LogWriter {
 
     @Override
     public void write(LogEntry entry) {
-        System.out.println("MyLogWriter--------" + entry.getMsg());
         try {
             if (entry != null && StringUtils.isNotEmpty(entry.getMsg())) {
-                XLog.d(TAG, entry.getMsg());
+                XLog.d(entry.getMsg());
             }
         } catch (Exception e) {
             e.printStackTrace();

@@ -7,7 +7,7 @@ import com.ipusoft.context.cache.AppCacheContext;
 import com.ipusoft.context.component.ToastUtils;
 import com.ipusoft.context.component.WToast;
 import com.ipusoft.context.iface.BaseSipStatusChangedListener;
-import com.ipusoft.logger.XLogger;
+import com.elvishew.xlog.XLog;
 import com.ipusoft.sip.bean.SipCallOutInfoBean;
 import com.ipusoft.sip.constant.CallStatusCode;
 import com.ipusoft.sip.constant.HttpCode;
@@ -43,10 +43,10 @@ public class MySipPhoneEvent extends PhoneEvent {
 
     @Override
     public void msg(String date, String type, int code, String msg) {
-        Log.d(TAG, "msg: ------------->" + code + "---->" + msg);
-        XLogger.d("date：" + date + "\ntype：" + type + "\ncode：" + code + "\nmsg：" + msg + "\n");
+        // Log.d(TAG, "msg: ------------->" + code + "---->" + msg);
+        XLog.d("date：" + date + "\ntype：" + type + "\ncode：" + code + "\nmsg：" + msg + "\n");
         // if (ArrayUtils.isNotEmpty(sipStatusChangedListenerList)) {
-        XLogger.d("sipStatusChangedListenerList.size：" + ArrayUtils.getListSize(sipStatusChangedListenerList));
+        XLog.d("sipStatusChangedListenerList.size：" + ArrayUtils.getListSize(sipStatusChangedListenerList));
         SipResponse sipResponse = new SipResponse();
         sipResponse.setCode(code);
         sipResponse.setDate(date);
@@ -64,7 +64,7 @@ public class MySipPhoneEvent extends PhoneEvent {
         String msg = sipResponse.getMsg();
         if (StringUtils.equals(SipType.INIT.getType(), type)) {
             if (code == InitCode.CODE_M1) {
-                XLogger.d("init：" + msg);
+                XLog.d("init：" + msg);
                 ThreadUtils.runOnUiThread(ToastUtils::dismiss);
                 if (ArrayUtils.isNotEmpty(sipStatusChangedListenerList)) {
                     for (BaseSipStatusChangedListener listener : sipStatusChangedListenerList) {
@@ -80,12 +80,12 @@ public class MySipPhoneEvent extends PhoneEvent {
         } else if (StringUtils.equals(SipType.LOGIN.getType(), type)) {
             switch (code) {
                 case LoginCode.CODE_1:
-                    XLogger.d("login: 已签入");
+                    XLog.d("login: 已签入");
                     SipPhoneManager.reCallPhoneBySip();
                     SipCoreService.setSipStatus(1);
                     break;
                 case LoginCode.CODE_0:
-                    XLogger.d("login: 签入失败，重新签入");
+                    XLog.d("login: 签入失败，重新签入");
                     new Thread(() -> {
                         SipManager.getInstance().libRegisterThread(Thread.currentThread().getName());
                         SipManager.getInstance().login();
@@ -103,12 +103,12 @@ public class MySipPhoneEvent extends PhoneEvent {
                     }
                     break;
                 case LoginCode.CODE_M100:
-                    XLogger.d("login: code=-100:uninit completed");
+                    XLog.d("login: code=-100:uninit completed");
                     SipCoreService.setSipStatus(0);
                     SipManager.getInstance().unregisterSip();
                     break;
                 case LoginCode.CODE_M200:
-                    XLogger.d("login: code=-200:注销 completed");
+                    XLog.d("login: code=-200:注销 completed");
                     SipCoreService.setSipStatus(0);
                     SipManager.getInstance().releaseRes();
                     SipPhoneManager.registerSip();
@@ -119,7 +119,7 @@ public class MySipPhoneEvent extends PhoneEvent {
         } else if (StringUtils.equals(SipType.HTTP.getType(), type)) {
             if (code == HttpCode.CODE_M99) {
                 ThreadUtils.runOnUiThread(ToastUtils::dismiss);
-                XLogger.d("http: code=-99:网络错误" + msg);
+                XLog.d("http: code=-99:网络错误" + msg);
                 if (ArrayUtils.isNotEmpty(sipStatusChangedListenerList)) {
                     for (BaseSipStatusChangedListener listener : sipStatusChangedListenerList) {
                         listener.onSipResponseError(sipResponse);
@@ -129,30 +129,30 @@ public class MySipPhoneEvent extends PhoneEvent {
         } else if (StringUtils.equals(SipType.CALL_STATUS.getType(), type)) {
             switch (code) {
                 case CallStatusCode.CODE_M66:
-                    XLogger.d("终端异常，需重新初始化，再呼叫");
+                    XLog.d("终端异常，需重新初始化，再呼叫");
                     break;
                 case CallStatusCode.CODE_M88:
 
                     Log.d(TAG, "preHandleStatus: ---------");
-                    XLogger.d("分机状态错误，需尝试登陆(login即可)，再呼叫");
+                    XLog.d("分机状态错误，需尝试登陆(login即可)，再呼叫");
                     new Thread(() -> {
                         SipManager.getInstance().libRegisterThread(Thread.currentThread().getName());
                         SipManager.getInstance().login();
                     }).start();
                     break;
                 case CallStatusCode.CODE_M99:
-                    XLogger.d("Json解析错误（系统内部错误）");
+                    XLog.d("Json解析错误（系统内部错误）");
                     ThreadUtils.runOnUiThread(() -> ToastUtils.showMessage(msg));
                     break;
                 case CallStatusCode.CODE_M1:
-                    XLogger.d("其他错误，请联系管理员排查再使用" + msg);
+                    XLog.d("其他错误，请联系管理员排查再使用" + msg);
                     ThreadUtils.runOnUiThread(() -> ToastUtils.showMessage(msg));
                     break;
                 case CallStatusCode.CODE_7:
-                    XLogger.d("发送按键成功");
+                    XLog.d("发送按键成功");
                     break;
                 case CallStatusCode.CODE_8:
-                    XLogger.d("发送按键失败");
+                    XLog.d("发送按键失败");
                     ThreadUtils.runOnUiThread(() -> WToast.showMessage("发送按键失败"));
                     break;
                 case CallStatusCode.CODE_0:
@@ -169,10 +169,10 @@ public class MySipPhoneEvent extends PhoneEvent {
                             String[] split = msg.split("<");
                             if (split.length != 0) {
                                 String number = split[0];
-                                Log.d(TAG, "msg: .-------------1>" + number);
+                                XLog.d("msg: .-------------1>" + number);
                                 if (StringUtils.isNotEmpty(number) && number.length() > 4) {
                                     String callInNumber = number.substring(1, number.length() - 2);
-                                    Log.d(TAG, "msg: .------------->" + callInNumber);
+                                    XLog.d("msg: .------------->" + callInNumber);
                                     sipCallOutInfoBean.setPhone(callInNumber);
                                 }
                             }

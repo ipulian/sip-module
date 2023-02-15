@@ -16,7 +16,7 @@ import com.ipusoft.context.component.ToastUtils;
 import com.ipusoft.context.constant.LiveDataConstant;
 import com.ipusoft.context.constant.NetWorkType;
 import com.ipusoft.context.constant.SipState;
-import com.ipusoft.logger.XLogger;
+import com.elvishew.xlog.XLog;
 import com.ipusoft.sip.ITimerTask;
 import com.ipusoft.sip.SipCacheApp;
 import com.ipusoft.sip.adapter.SipPhoneFloatingViewAdapter;
@@ -91,7 +91,7 @@ public class SipPhoneFloatingService extends BaseLifeCycleService implements OnS
     @Override
     protected void onICreate() {
         if (mFloatingView != null && mFloatingView.getShowStatus()) {
-            XLogger.d(TAG, "外呼弹屏已经展示");
+            XLog.d(TAG, "外呼弹屏已经展示");
             return;
         }
 
@@ -134,7 +134,7 @@ public class SipPhoneFloatingService extends BaseLifeCycleService implements OnS
 
         LiveDataBus.get().with(LiveDataConstant.NETWORK_CHANGED, NetWorkType.class)
                 .observe(this, netWorkType -> {
-                    Log.d(TAG, "bindLiveData: ------------->" + netWorkType);
+                    XLog.d("bindLiveData: ------------->" + netWorkType);
                     if (mFloatingView != null) {
                         if (NetWorkType.NETWORK_NO == netWorkType) {
                             mFloatingView.setNetWorkStatus(NO_NET_WORK);
@@ -145,7 +145,7 @@ public class SipPhoneFloatingService extends BaseLifeCycleService implements OnS
         LiveDataBus.get().with(LiveDataConstant.WINDOW_SHOW_SIP_CALL, SipCallOutInfoBean.class)
                 .observe(this, sipBean -> {
                     if (mFloatingView != null && mFloatingView.getShowStatus()) {
-                        XLogger.d(TAG, "外呼弹屏已经展示");
+                        XLog.d(TAG, "外呼弹屏已经展示");
                         return;
                     }
                     //Log.d(TAG, "onIStartCommand: ----------->2");
@@ -195,7 +195,7 @@ public class SipPhoneFloatingService extends BaseLifeCycleService implements OnS
 
         LiveDataBus.get().with(LiveDataConstant.UPDATE_SIP_CALL_STATUS, SipState.class)
                 .observe(this, sipCallStatus -> {
-                    Log.d(TAG, "bindLiveData: ----------:" + sipCallStatus);
+                    XLog.d("UPDATE_SIP_CALL_STATUS: ----------:" + sipCallStatus);
                     ToastUtils.dismiss();
 //                    try {
 //                        WifiManager manager = (WifiManager) this.getSystemService(Context.WIFI_SERVICE);
@@ -233,7 +233,7 @@ public class SipPhoneFloatingService extends BaseLifeCycleService implements OnS
                             @Override
                             public void run() {
                                 ++noUserAnsweredType;
-                                Log.d(TAG, "bindLiveData: ----------:" + noUserAnsweredType);
+                                XLog.d("noUserAnsweredType: ----------:" + noUserAnsweredType);
                             }
                         });
                         task1.start();
@@ -316,7 +316,7 @@ public class SipPhoneFloatingService extends BaseLifeCycleService implements OnS
         if (intent != null) {
             String json = intent.getStringExtra(LiveDataConstant.WINDOW_SHOW_SIP_CALL);
             if (mFloatingView != null && mFloatingView.getShowStatus()) {
-                XLogger.d(TAG, "外呼弹屏已经展示");
+                XLog.d(TAG, "外呼弹屏已经展示");
                 return;
             }
             if (StringUtils.isNotEmpty(json)) {

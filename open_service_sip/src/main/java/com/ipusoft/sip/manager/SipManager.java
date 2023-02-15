@@ -3,9 +3,9 @@ package com.ipusoft.sip.manager;
 
 import android.util.Log;
 
+import com.elvishew.xlog.XLog;
 import com.ipusoft.context.AppRuntimeContext;
 import com.ipusoft.context.bean.SeatInfo;
-import com.ipusoft.logger.XLogger;
 import com.ipusoft.sip.MyLogWriter;
 import com.ipusoft.sip.MySipPhoneEvent;
 import com.ipusoft.utils.GsonUtils;
@@ -48,10 +48,10 @@ public class SipManager {
         if (seatInfo == null || StringUtils.isEmpty(seatInfo.getSeatNo())
                 || StringUtils.isEmpty(seatInfo.getSdkSecret()) ||
                 StringUtils.isEmpty(seatInfo.getApiKey())) {
-            XLogger.d("registerSip: 参数错误,坐席信息不能为空,seatInfo：" + GsonUtils.toJson(seatInfo));
+            XLog.d("registerSip: 参数错误,坐席信息不能为空,seatInfo：" + GsonUtils.toJson(seatInfo));
             return;
         }
-        Log.d(TAG, "registerSip: .--------->" + GsonUtils.toJson(seatInfo));
+        // Log.d(TAG, "registerSip: .--------->" + GsonUtils.toJson(seatInfo));
         if (logWriter == null)
             logWriter = new MyLogWriter();
 
@@ -91,24 +91,24 @@ public class SipManager {
      * @param cPhone 外呼号码
      */
     public String makeCall(String cPhone) {
-        XLogger.d("makeCall：" + cPhone);
+        XLog.d("makeCall：" + cPhone);
         String recordId = "";
         if (phone != null) {
             recordId = phone.callout(cPhone);
             //recordId = phone.callout(cPhone, "123455678");
         }
-        XLogger.d("makeCall->recordId：" + recordId);
+        XLog.d("makeCall->recordId：" + recordId);
         return recordId;
     }
 
     public String makeCall(String cPhone, String extend) {
-        XLogger.d("makeCall：" + cPhone);
+        XLog.d("makeCall：" + cPhone + "---->extend：" + extend);
         String recordId = "";
         if (phone != null) {
             // recordId = phone.callout(cPhone);
             recordId = phone.callout(cPhone, extend);
         }
-        XLogger.d("makeCall->recordId：" + recordId);
+        XLog.d("makeCall->recordId：" + recordId);
         return recordId;
     }
 

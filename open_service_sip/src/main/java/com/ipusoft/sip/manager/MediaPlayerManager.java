@@ -7,7 +7,7 @@ import android.util.Log;
 
 import androidx.annotation.RawRes;
 
-import com.ipusoft.logger.XLogger;
+import com.elvishew.xlog.XLog;
 import com.ipusoft.sip.R;
 
 import java.io.IOException;
@@ -58,7 +58,7 @@ public class MediaPlayerManager {
             mediaPlayer.setLooping(isLooping);
             mediaPlayer.prepare();
             mediaPlayer.start();
-            XLogger.d(TAG, "开始播放提示音：--->" + resId);
+            XLog.d("开始播放提示音：--->" + resId);
             if (listener != null) {
                 mediaPlayer.setOnCompletionListener(listener::onCompletion);
             }
