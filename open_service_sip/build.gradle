@@ -68,8 +68,8 @@ dependencies {
     if (isApp) {
         implementation project(":context:context")
     } else {
-        implementation 'com.github.ipulian:ipusdk:1.6.42'
-        //simplementation project(":context:context")
+        implementation 'com.github.ipulian:ipusdk:1.6.45'
+        //implementation project(":context:context")
     }
 
     /**

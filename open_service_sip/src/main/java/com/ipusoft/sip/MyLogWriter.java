@@ -1,6 +1,5 @@
 package com.ipusoft.sip;
 
-import com.elvishew.xlog.XLog;
 import com.ipusoft.utils.StringUtils;
 
 import org.pjsip.pjsua2.LogEntry;
@@ -20,7 +19,7 @@ public class MyLogWriter extends LogWriter {
     public void write(LogEntry entry) {
         try {
             if (entry != null && StringUtils.isNotEmpty(entry.getMsg())) {
-                XLog.d(entry.getMsg());
+                //XLog.d(entry.getMsg());
             }
         } catch (Exception e) {
             e.printStackTrace();

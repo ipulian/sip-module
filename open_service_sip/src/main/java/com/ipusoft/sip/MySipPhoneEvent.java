@@ -80,12 +80,17 @@ public class MySipPhoneEvent extends PhoneEvent {
         } else if (StringUtils.equals(SipType.LOGIN.getType(), type)) {
             switch (code) {
                 case LoginCode.CODE_1:
-                    XLog.d("login: 已签入");
+                    XLog.d("login: 已登陆");
                     SipPhoneManager.reCallPhoneBySip();
                     SipCoreService.setSipStatus(1);
+                    if (ArrayUtils.isNotEmpty(sipStatusChangedListenerList)) {
+                        for (BaseSipStatusChangedListener listener : sipStatusChangedListenerList) {
+                            listener.onSipResponseSuccess(sipResponse);
+                        }
+                    }
                     break;
                 case LoginCode.CODE_0:
-                    XLog.d("login: 签入失败，重新签入");
+                    XLog.d("login: 登陆失败，重新登陆");
                     new Thread(() -> {
                         SipManager.getInstance().libRegisterThread(Thread.currentThread().getName());
                         SipManager.getInstance().login();
@@ -98,7 +103,7 @@ public class MySipPhoneEvent extends PhoneEvent {
                     ThreadUtils.runOnUiThread(ToastUtils::dismiss);
                     if (ArrayUtils.isNotEmpty(sipStatusChangedListenerList)) {
                         for (BaseSipStatusChangedListener listener : sipStatusChangedListenerList) {
-                            listener.onSipResponseError(sipResponse);
+                            listener.onSipResponseSuccess(sipResponse);
                         }
                     }
                     break;
@@ -122,7 +127,7 @@ public class MySipPhoneEvent extends PhoneEvent {
                 XLog.d("http: code=-99:网络错误" + msg);
                 if (ArrayUtils.isNotEmpty(sipStatusChangedListenerList)) {
                     for (BaseSipStatusChangedListener listener : sipStatusChangedListenerList) {
-                        listener.onSipResponseError(sipResponse);
+                        listener.onSipResponseSuccess(sipResponse);
                     }
                 }
             }

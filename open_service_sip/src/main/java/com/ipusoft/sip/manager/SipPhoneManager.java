@@ -9,7 +9,6 @@ import com.ipusoft.mmkv.datastore.CommonDataRepo;
 import com.ipusoft.sip.SipCacheApp;
 import com.ipusoft.sip.bean.SipCallOutInfoBean;
 import com.ipusoft.sip.constant.SipPhoneType;
-import com.ipusoft.utils.GsonUtils;
 import com.ipusoft.utils.StringUtils;
 
 /**
@@ -204,7 +203,7 @@ public class SipPhoneManager {
                 && StringUtils.isNotEmpty(seatInfo.getApiKey())) {
             SipManager.getInstance().registerSip(seatInfo);
         } else {
-            XLog.d("注册线路失败,无坐席信息,seatInfo：" + GsonUtils.toJson(seatInfo));
+            XLog.d("注册线路失败,无坐席信息,seatInfo：");
             ToastUtils.showMessage("注册线路失败,无坐席信息");
         }
     }

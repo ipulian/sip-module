@@ -71,6 +71,7 @@ public class SipManager {
             phoneConfig.setLl_api_server(AppRuntimeContext.OPEN_BASE_URL);
 
             Log.d(TAG, "registerSip: ----------->" + AppRuntimeContext.OPEN_BASE_URL);
+            XLog.d("seatInfo-------->" + GsonUtils.toJson(seatInfo));
 //            phoneConfig.setLl_api_server("https://api.51lianlian.cn");
             // Log.d(TAG, "registerSip: .----------->" + GsonUtils.toJson(seatInfo));
             phoneConfig.setApi_key(seatInfo.getApiKey());
