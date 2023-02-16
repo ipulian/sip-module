@@ -98,6 +98,9 @@ public class OnSipStatusChangedListenerImpl extends OnSipStatusChangedListener{
 务必保持手机屏幕常亮（Android手机在锁屏状态下，无法接收UDP数据包），否则将导致通话中断，直到重新点亮手机屏幕。
 ```
 ## Change Log
+#### v1.6.45
+* 1.新增SDK日志，以及上传日志的接口；
+* 2.新增SIP在线状态；
 #### v1.1.21
 * 1.修复部分场景下卡顿问题；
 * 2.增强SIP通话语音质量；
