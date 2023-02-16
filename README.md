@@ -66,16 +66,28 @@ public class OnSipStatusChangedListenerImpl extends OnSipStatusChangedListener{
     public abstract void onEndCall(){
         //TODO 外呼结束，已经挂断
     }
+    @Override
+    public void onSipLoginStatusChanged(int status) {
+	//TODO sip登陆状态，status：1已登陆（可以正常外呼）；0登陆异常（已离线，不能外呼）
+	//如果是离线状态，可以在子线程中调用下面三行代码，实现立即重新登录；如果不手动重新登录，每30秒，会自动重连
+	// 	SipManager.getInstance().libRegisterThread(Thread.currentThread().getName());
+                SipManager.getInstance().login();
+                SipManager.getInstance().resetLoginCnt();
+    }
 }
 ```
 ```java
   //该方法在Application的onCreate中调用
  IpuSoftSDK.registerSipStatusChangedListener(new OnSipStatusChangedListenerImpl());
 ```
-- 3.SIP暂不支持发送短信
-- 4.获取通话状态,可以参考 IpuSDK(https://github.com/ipulian/ipusdk) 中的说明。
-- 5.展示通话弹屏,可以参考 IpuSDK(https://github.com/ipulian/ipusdk) 中的说明。
-- 6.如果APP退出登录，请同时退出SDK
+- 3.上传SIP日志(在发生未知情况，影响使用时，可以上传SDK日志，帮助我们定位问题)
+```java
+   LogUtils.uploadSIPLog(); 
+```
+- 4.SIP暂不支持发送短信
+- 5.获取通话状态,可以参考 IpuSDK(https://github.com/ipulian/ipusdk) 中的说明。
+- 6.展示通话弹屏,可以参考 IpuSDK(https://github.com/ipulian/ipusdk) 中的说明。
+- 7.如果APP退出登录，请同时退出SDK
 ```java
   //调用该方法之后，直到重新调用init()方法或者updateAuthInfo()方法，都不会再发送sip心跳)
  IpuSoftSDK.signOut();
