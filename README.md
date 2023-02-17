@@ -54,15 +54,15 @@ SipPhoneManager.callPhoneBySip(phone,extendJson);
 //继承 OnSipStatusChangedListener抽象类，并重写以下三个抽象方法（如果想获取更加详细的通话状态，
 //可以继承 BaseSipStatusChangedListener）。并把该实现类注册到SDK中。
 public class OnSipStatusChangedListenerImpl extends OnSipStatusChangedListener{
-    Override
+    @Override
     public  void onSipResponseError(SipResponse sipResponse){
         //TODO 外呼出错，通过sipResponse.getMsg()，可查看出错信息
     }
-    Override  
+    @Override  
     public abstract void onStartCall(){
         //TODO SIP准备完成(初始化，注册等)，开始外呼
     }
-    Override
+    @Override
     public abstract void onEndCall(){
         //TODO 外呼结束，已经挂断
     }
