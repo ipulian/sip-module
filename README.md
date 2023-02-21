@@ -69,7 +69,7 @@ public class OnSipStatusChangedListenerImpl extends OnSipStatusChangedListener{
     @Override
     public void onSipLoginStatusChanged(int status) {
 	//TODO sip登陆状态，status：1已登陆（可以正常外呼）；0登陆异常（已离线，不能外呼）
-	//如果是离线状态，可以在子线程中调用下面三行代码，实现立即重新登录；如果不手动重新登录，每30秒，会自动重连
+	//如果是离线状态，可以在【子线程】中调用下面三行代码，实现立即重新登录；如果不手动重新登录，每间隔30秒，也会自动重新登录。
 	 	SipManager.getInstance().libRegisterThread(Thread.currentThread().getName());
                 SipManager.getInstance().login();
                 SipManager.getInstance().resetLoginCnt();
