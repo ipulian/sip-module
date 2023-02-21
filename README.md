@@ -99,8 +99,10 @@ public class OnSipStatusChangedListenerImpl extends OnSipStatusChangedListener{
 ```
 ## Change Log
 #### v1.6.45
-* 1.新增SDK日志，以及上传日志的接口；
-* 2.新增SIP在线状态；
+* 1.优化底层网络连接；
+* 2.优化分机注册的流程；
+* 3.新增分机在线状态；
+* 4.新增SDK日志，以及上传日志的接口；
 #### v1.1.21
 * 1.修复部分场景下卡顿问题；
 * 2.增强SIP通话语音质量；
